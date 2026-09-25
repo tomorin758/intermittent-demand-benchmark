@@ -78,3 +78,4 @@ LaTeX extended table,m5,tables/results_extended_m5.tex,
 Figure 1 (reorder),all,analysis/make_fig_reorder_unified.py,reads tables/*_unified.csv
 paired bootstrap intervals,all,analysis/bootstrap_final.py,"B=4000, resampling series"
 threshold sweep,all,analysis/cscan_final.py,"c in {0.1,...,2.0}"
+Romano-Wolf stepdown counts,all,analysis/romano_wolf.py,controls FWER at 5% over all model pairs; same resampling as bootstrap_final.py

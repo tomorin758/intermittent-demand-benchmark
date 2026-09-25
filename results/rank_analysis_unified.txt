@@ -96,7 +96,14 @@ C. rank movement relative to the non-zero MAE axis
     vs erratic RMSE         rho=+0.639   |rank diff|>=5:  9/23  max=14
 
 ============================================================================================
-D. best model per axis
+D. QL(0.5) vs zero-detection F1 (the Section 5(iii) claim)
+============================================================================================
+  parts                rho(QL(0.5), F1) = -0.948   (n=22; QL leader DeepAR(negbin), F1 leader DeepAR(negbin))
+  fresh_retail         rho(QL(0.5), F1) = -0.721   (n=22; QL leader TimesFM, F1 leader PatchMixer)
+  m5                   rho(QL(0.5), F1) = -0.867   (n=23; QL leader TimesFM, F1 leader DeepAR)
+
+============================================================================================
+E. best model per axis
 ============================================================================================
 
   parts

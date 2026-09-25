@@ -123,7 +123,21 @@ def main():
             big = sum(1 for d in diffs if d >= 5)
             p(f'    vs {ax:20s} rho={r:+.3f}   |rank diff|>=5: {big:2d}/{len(kk)}  max={max(diffs):.0f}')
 
-    p(); p('=' * 92); p('D. best model per axis'); p('=' * 92)
+    p(); p('=' * 92); p('D. QL(0.5) vs zero-detection F1 (the Section 5(iii) claim)'); p('=' * 92)
+    for name, D in sets.items():
+        keys = [k for k in D if not (math.isnan(D[k]['QL(0.5)']) or math.isnan(D[k]['F1 score']))]
+        if len(keys) < 3:
+            continue
+        # Ranks are ascending on the raw values (1 = smallest). Because a small QL is good and a
+        # large F1 is good, agreement between the two orderings shows up as a NEGATIVE correlation --
+        # this is the convention used in Section 5(iii) of the paper.
+        r_ql = rank({k: D[k]['QL(0.5)'] for k in keys}, keys)
+        r_f1 = rank({k: D[k]['F1 score'] for k in keys}, keys)
+        p(f'  {name:20s} rho(QL(0.5), F1) = {pear([r_ql[k] for k in keys], [r_f1[k] for k in keys]):+.3f}'
+          f'   (n={len(keys)}; QL leader {min(keys, key=lambda k: D[k]["QL(0.5)"])}, '
+          f'F1 leader {min(keys, key=lambda k: -D[k]["F1 score"])})')
+
+    p(); p('=' * 92); p('E. best model per axis'); p('=' * 92)
     for name, D in sets.items():
         p(f'\n  {name}')
         for ax in AXES:

@@ -1,0 +1,36 @@
+====================================================================================================
+Romano-Wolf stepdown   metric = ql_raw   B = 4000   alpha = 0.05   (same resampling as results/bootstrap_ql_raw.txt)
+====================================================================================================
+
+parts: 22 models, 857 series, 231 pairs
+  CI excludes 0 (naive, as quoted in the paper): 210 / 231
+  Romano-Wolf stepdown (FWER 5%):                200 / 231
+  vs the leader (DeepAR-negbin): naive separates 19 / 21; stepdown separates 19 / 21
+  stepdown-controlled leading group: ['DeepAR-negbin', 'TimesFM', 'Chronos']
+  pairs rejected only by stepdown (largest t first):
+    MOMENT           vs TSB              d=-0.0184 CI=[-0.0306,-0.0063] t= 2.93
+    TweedieGP        vs Moirai           d=-0.0168 CI=[-0.0284,-0.0049] t= 2.82
+    TimesFM          vs TweedieGP        d=-0.0146 CI=[-0.0250,-0.0047] t= 2.79
+    Chronos          vs DeepAR           d=-0.0153 CI=[-0.0261,-0.0043] t= 2.72
+    DeepAR           vs Moirai           d=-0.0133 CI=[-0.0229,-0.0041] t= 2.68
+    DeepAR           vs PatchTCN         d=-0.0096 CI=[-0.0168,-0.0024] t= 2.59
+    PatchMixer       vs DeepAR           d=-0.0066 CI=[-0.0122,-0.0013] t= 2.37
+    TweedieGP        vs PatchTCN         d=-0.0131 CI=[-0.0236,-0.0020] t= 2.36
+    PatchTST         vs HurdleDLinear    d=-0.0167 CI=[-0.0323,-0.0014] t= 2.10
+    MOMENT           vs TTM              d=-0.0148 CI=[-0.0289,-0.0006] t= 2.01
+
+fresh_retail: 22 models, 50000 series, 231 pairs
+  CI excludes 0 (naive, as quoted in the paper): 229 / 231
+  Romano-Wolf stepdown (FWER 5%):                229 / 231
+  vs the leader (TimesFM): naive separates 21 / 21; stepdown separates 21 / 21
+  stepdown-controlled leading group: ['TimesFM']
+  pairs rejected only by stepdown (largest t first):
+
+m5: 23 models, 30490 series, 253 pairs
+  CI excludes 0 (naive, as quoted in the paper): 244 / 253
+  Romano-Wolf stepdown (FWER 5%):                242 / 253
+  vs the leader (TimesFM): naive separates 22 / 22; stepdown separates 22 / 22
+  stepdown-controlled leading group: ['TimesFM']
+  pairs rejected only by stepdown (largest t first):
+    Chronos          vs TTM              d=-0.0035 CI=[-0.0063,-0.0007] t= 2.48
+    TweedieGP        vs Chronos          d=-0.0038 CI=[-0.0073,-0.0003] t= 2.18

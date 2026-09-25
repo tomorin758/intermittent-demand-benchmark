@@ -10,7 +10,7 @@ Author and institution names are withheld for double-blind review.
 | `code/pipeline/` | the evaluation pipeline: build the common-window prediction store, re-run the single-window baselines, recompute every metric, verify every array |
 | `code/metrics_implementation.py` | the metric implementation used for every number (`metric_comprehensive`) |
 | `code/gen_tables.py` | generates the LaTeX tables from `tables/*_unified.csv` |
-| `analysis/` | paired bootstrap, threshold sweep, rank/redundancy analysis, figure generator, number audit |
+| `analysis/` | paired bootstrap, Romano-Wolf stepdown, threshold sweep, rank/redundancy analysis, figure generator, number audit |
 | `metrics/pooled/<dataset>/<model>.json` | all 16 pooled metrics per model (untruncated and truncated) |
 | `metrics/perseries/<dataset>/<model>.csv` | one row per series: 25 columns incl. TP/FP/FN counts, so both pooled and per-series-mean conventions can be recomputed |
 | `tables/` | the six LaTeX tables of the paper and the sheet-format CSVs they are built from |
@@ -47,6 +47,7 @@ Everything below runs from the bundle alone (numpy + pandas; matplotlib only for
 | `python analysis/check_consistency.py` | `results/consistency_report.md` | the tables agree cell-by-cell with `metrics/pooled/` (335/335 checks) |
 | `python analysis/bootstrap_final.py bundle ql_raw` | `results/bootstrap_ql_raw.{txt,json}` | the leading groups and the "N of M pairs are separated" counts (Section 4) |
 | `python analysis/bootstrap_final.py bundle f1_trunc` | `results/bootstrap_f1_trunc.{txt,json}` | the zero-detection leading groups |
+| `python analysis/romano_wolf.py` | `results/romano_wolf_{ql_raw,f1_trunc}.{txt,json}` | the family-wise-error-controlled pair counts and leading groups of Sections 3.3 and 4 |
 | `python analysis/rank_analysis.py tables/parts_unified.csv tables/fresh_retail_unified.csv tables/m5_unified.csv unified` | `results/rank_analysis_unified.txt` | metric redundancy and rank-reversal statistics (Section 4.4) |
 | `python analysis/make_fig_reorder_unified.py` | `results/fig_reorder.pdf` | Figure 1 |
 | (pre-computed) `results/cscan.csv` | per-model zero-detection metrics at c in {0.1 ... 2.0} | the threshold-sensitivity section |
@@ -75,4 +76,6 @@ Sources to cite when reusing the data: `carparts`/expsmooth (GPL-2+) and FreshRe
 (CC-BY-4.0, arXiv:2505.16319); M5 per Makridakis et al. (2022).
 
 The paired bootstrap of Section 4 is `analysis/bootstrap_final.py` (B = 4000, Poisson weights,
-resampling series); the threshold sweep of Section 5.5 is `analysis/cscan_final.py`.
+resampling series); the Romano-Wolf stepdown that controls the family-wise error rate over the whole
+family of model pairs is `analysis/romano_wolf.py` (same resampling, alpha = 5%); the threshold sweep
+of Section 5.5 is `analysis/cscan_final.py`.
