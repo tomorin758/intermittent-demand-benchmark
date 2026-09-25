@@ -48,6 +48,7 @@ Everything below runs from the bundle alone (numpy + pandas; matplotlib only for
 | `python analysis/bootstrap_final.py bundle ql_raw` | `results/bootstrap_ql_raw.{txt,json}` | the leading groups and the "N of M pairs are separated" counts (Section 4) |
 | `python analysis/bootstrap_final.py bundle f1_trunc` | `results/bootstrap_f1_trunc.{txt,json}` | the zero-detection leading groups |
 | `python analysis/romano_wolf.py` | `results/romano_wolf_{ql_raw,f1_trunc}.{txt,json}` | the family-wise-error-controlled pair counts and leading groups of Sections 3.3 and 4 |
+| `python analysis/trivial_baselines.py` | `results/trivial_baselines.csv` | the trivial reference predictors (always-zero, naive, seasonal naive, two constant means) and the ranks they would take among the subjects; Section 6 and Limitation (9) |
 | `python analysis/rank_analysis.py tables/parts_unified.csv tables/fresh_retail_unified.csv tables/m5_unified.csv unified` | `results/rank_analysis_unified.txt` | metric redundancy and rank-reversal statistics (Section 4.4) |
 | `python analysis/make_fig_reorder_unified.py` | `results/fig_reorder.pdf` | Figure 1 |
 | (pre-computed) `results/cscan.csv` | per-model zero-detection metrics at c in {0.1 ... 2.0} | the threshold-sensitivity section |
@@ -60,7 +61,10 @@ themselves cannot be regenerated from it; `analysis/cscan_final.py` is the one s
 arrays (it is kept so that the same sweep can be re-run by anyone who has them, while its raw output
 is shipped as `results/cscan.csv`). For a reader who does want to rebuild the full pipeline,
 `code/pipeline/` documents exactly what was run, and the paper's Section 3 lists the third-party
-repositories and datasets that the runs started from.
+repositories and datasets that the runs started from. Two shipped results are pre-computed rather
+than regenerated: `results/cscan.csv` (needs the prediction arrays) and the M5 rows of
+`results/trivial_baselines.csv` (the M5 history table is not redistributed; the script recomputes
+the Parts and Fresh retail rows from `data/` alone).
 
 ## Reproducing a number
 
