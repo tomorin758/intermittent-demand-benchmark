@@ -7,7 +7,7 @@ Writes .scratch/unify/rank_analysis_<tag>.txt and prints the same report.
 Rows used are the TRUNCATED (tau=0.5) rows, i.e. the c=0.5 variant, matching the
 published analysis; the reference axis is the non-zero MAE column.
 """
-import csv, sys, math, os
+import csv, sys, math, os, json
 from itertools import combinations
 
 BUNDLE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,6 +17,59 @@ AXES = ['QL(0.5)', 'Precision', 'Recall', 'F1 score', 'MAE', 'RMSE', '[0, q10] R
         '(q10, q25] RMSE', '(q25, q50] RMSE', '(q50, q75] RMSE', '(q75, q90] RMSE',
         '(q90, ∞) RMSE', 'intermittent RMSE', 'lumpy RMSE', 'smooth RMSE', 'erratic RMSE']
 
+
+
+# ---- full-precision inputs -------------------------------------------------
+# tables/*_unified.csv is rounded to three decimals, which creates spurious ties (two models whose
+# non-zero MAE rounds to the same value) and average ranks then shift by half a position -- enough
+# to flip a "moved five or more places" count and to pull Spearman correlations towards zero.
+# metrics/pooled/ carries the unrounded values, so it is preferred when present; the CSVs in
+# tables/ remain the fallback and keep this script runnable from the tables alone.
+POOLED = os.environ.get('POOLED_DIR', os.path.join(BUNDLE, 'metrics', 'pooled'))
+_SEG_ORDER = ['[0, q10] RMSE', '(q10, q25] RMSE', '(q25, q50] RMSE',
+              '(q50, q75] RMSE', '(q75, q90] RMSE', '(q90, \u221e) RMSE']
+_AXES_JSON = ['QL(0.5)', 'Precision', 'Recall', 'F1 score', 'MAE', 'RMSE',
+              'intermittent RMSE', 'lumpy RMSE', 'smooth RMSE', 'erratic RMSE']
+_KEY = {'QL(0.5)': 'QL(0.5)', 'Precision': '0Precision(c=0.5)', 'Recall': '0Recall(c=0.5)',
+        'F1 score': '0F1(c=0.5)', 'MAE': 'MAE_nonzero', 'RMSE': 'RMSE_nonzero',
+        'intermittent RMSE': 'NT_Intermittent RMSE', 'lumpy RMSE': 'NT_Lumpy RMSE',
+        'smooth RMSE': 'NT_Smooth RMSE', 'erratic RMSE': 'NT_Erratic RMSE'}
+
+
+def load_pooled(dsdir):
+    """Full-precision rows from metrics/pooled/<dataset>/*.json (untruncated point metrics and
+    the c=0.5 zero-detection metrics, i.e. exactly the convention the paper reports)."""
+    files = {}
+    for f in sorted(os.listdir(dsdir)):
+        if f.endswith('.json'):
+            with open(os.path.join(dsdir, f)) as fh:
+                files[f[:-5]] = json.load(fh)
+    if not files:
+        return {}
+    segs = sorted({k for d in files.values() for k in d if k.startswith('NT_Seg')},
+                  key=lambda s: int(s[6:].split('_')[0]))
+    key = dict(_KEY)
+    for i, c in enumerate(_SEG_ORDER):
+        key[c] = segs[i] if i < len(segs) else None
+    D = {}
+    for m, d in files.items():
+        row = {}
+        for c in _AXES_JSON + _SEG_ORDER:
+            k = key.get(c)
+            v = d.get(k) if k else None
+            row[c] = float('nan') if v is None else float(v)
+        D[m] = row
+    return D
+
+
+def dataset_of(path):
+    base = os.path.basename(path)
+    return 'fresh_retail' if 'fresh' in base else ('m5' if base.startswith('m5') else 'parts')
+
+
+def load_any(path):
+    pd = os.path.join(POOLED, dataset_of(path))
+    return load_pooled(pd) if os.path.isdir(pd) else None
 
 def num(s):
     try:
@@ -86,7 +139,9 @@ def main():
         print(s); out.append(s)
     sets = {}
     for f in files:
-        D = load(f)
+        D = load_any(f)
+        if D is None:
+            D = load(f)
         sets[os.path.basename(f).replace(' - Sheet1.csv', '').replace('_unified.csv', '')] = D
     p('=' * 92)
     p('A. active columns (a column counts as active if at least one model has a value)')

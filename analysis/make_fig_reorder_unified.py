@@ -1,4 +1,4 @@
-import csv, math, itertools
+import csv, math, itertools, json
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib
@@ -10,6 +10,7 @@ import os as _os
 _BUNDLE=_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
 _TABLES=_os.environ.get('TABLES_DIR', _os.path.join(_BUNDLE,'tables'))
 _RESULTS=_os.environ.get('RESULTS_DIR', _os.path.join(_BUNDLE,'results'))
+POOLED=_os.environ.get('POOLED_DIR', _os.path.join(_BUNDLE,'metrics','pooled'))
 _os.makedirs(_RESULTS, exist_ok=True)
 FILES={'Parts':_os.path.join(_TABLES,'parts_unified.csv'),
        'Fresh':_os.path.join(_TABLES,'fresh_retail_unified.csv'),
@@ -17,6 +18,59 @@ FILES={'Parts':_os.path.join(_TABLES,'parts_unified.csv'),
 AXES=['(q90, ∞) RMSE','intermittent RMSE','lumpy RMSE','smooth RMSE']
 LABEL={'(q90, ∞) RMSE':'Tail\n$(q_{90},\\infty)$','intermittent RMSE':'Intermittent',
        'lumpy RMSE':'Lumpy','smooth RMSE':'Smooth'}
+
+# ---- full-precision inputs -------------------------------------------------
+# tables/*_unified.csv is rounded to three decimals, which creates spurious ties (two models whose
+# non-zero MAE rounds to the same value) and average ranks then shift by half a position -- enough
+# to flip a "moved five or more places" count and to pull Spearman correlations towards zero.
+# metrics/pooled/ carries the unrounded values, so it is preferred when present; the CSVs in
+# tables/ remain the fallback and keep this script runnable from the tables alone.
+POOLED = _os.environ.get('POOLED_DIR', _os.path.join(_BUNDLE, 'metrics', 'pooled'))
+_SEG_ORDER = ['[0, q10] RMSE', '(q10, q25] RMSE', '(q25, q50] RMSE',
+              '(q50, q75] RMSE', '(q75, q90] RMSE', '(q90, \u221e) RMSE']
+_AXES_JSON = ['QL(0.5)', 'Precision', 'Recall', 'F1 score', 'MAE', 'RMSE',
+              'intermittent RMSE', 'lumpy RMSE', 'smooth RMSE', 'erratic RMSE']
+_KEY = {'QL(0.5)': 'QL(0.5)', 'Precision': '0Precision(c=0.5)', 'Recall': '0Recall(c=0.5)',
+        'F1 score': '0F1(c=0.5)', 'MAE': 'MAE_nonzero', 'RMSE': 'RMSE_nonzero',
+        'intermittent RMSE': 'NT_Intermittent RMSE', 'lumpy RMSE': 'NT_Lumpy RMSE',
+        'smooth RMSE': 'NT_Smooth RMSE', 'erratic RMSE': 'NT_Erratic RMSE'}
+
+
+def load_pooled(dsdir):
+    """Full-precision rows from metrics/pooled/<dataset>/*.json (untruncated point metrics and
+    the c=0.5 zero-detection metrics, i.e. exactly the convention the paper reports)."""
+    files = {}
+    for f in sorted(_os.listdir(dsdir)):
+        if f.endswith('.json'):
+            with open(_os.path.join(dsdir, f)) as fh:
+                files[f[:-5]] = json.load(fh)
+    if not files:
+        return {}
+    segs = sorted({k for d in files.values() for k in d if k.startswith('NT_Seg')},
+                  key=lambda s: int(s[6:].split('_')[0]))
+    key = dict(_KEY)
+    for i, c in enumerate(_SEG_ORDER):
+        key[c] = segs[i] if i < len(segs) else None
+    D = {}
+    for m, d in files.items():
+        row = {}
+        for c in _AXES_JSON + _SEG_ORDER:
+            k = key.get(c)
+            v = d.get(k) if k else None
+            row[c] = float('nan') if v is None else float(v)
+        D[m] = row
+    return D
+
+
+def dataset_of(path):
+    base = _os.path.basename(path)
+    return 'fresh_retail' if 'fresh' in base else ('m5' if base.startswith('m5') else 'parts')
+
+
+def load_any(path):
+    pd = _os.path.join(POOLED, dataset_of(path))
+    return load_pooled(pd) if _os.path.isdir(pd) else None
+
 def num(s):
     try: return float(s.strip())
     except ValueError: return float('nan')
@@ -36,13 +90,15 @@ def pear(a,b):
 
 DATA={}
 for ds,f in FILES.items():
-    rows=list(csv.reader(open(f,encoding='utf-8-sig')))
-    hdr=[c.strip() for c in rows[1]]
-    idx={c:hdr.index(c) for c in ['MAE']+AXES}
-    D={}
-    for r in rows[2:]:
-        if len(r)<2 or not r[1].strip() or '(\u03c4=0.5)' in r[1]: continue   # untruncated rows = ranking reference
-        D[r[1].strip()]={c:num(r[idx[c]]) for c in idx}
+    D=load_any(f)                                    # full precision when metrics/pooled/ exists
+    if D is None:
+        rows=list(csv.reader(open(f,encoding='utf-8-sig')))
+        hdr=[c.strip() for c in rows[1]]
+        idx={c:hdr.index(c) for c in ['MAE']+AXES}
+        D={}
+        for r in rows[2:]:
+            if len(r)<2 or not r[1].strip() or '(\u03c4=0.5)' in r[1]: continue   # untruncated = reference
+            D[r[1].strip()]={c:num(r[idx[c]]) for c in idx}
     DATA[ds]=D
 
 fig,axes=plt.subplots(1,2,figsize=(7.4,2.9))
