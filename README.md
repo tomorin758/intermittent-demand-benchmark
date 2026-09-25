@@ -51,12 +51,15 @@ Everything below runs from the bundle alone (numpy + pandas; matplotlib only for
 | `python analysis/make_fig_reorder_unified.py` | `results/fig_reorder.pdf` | Figure 1 |
 | (pre-computed) `results/cscan.csv` | per-model zero-detection metrics at c in {0.1 ... 2.0} | the threshold-sensitivity section |
 
-**Not reproducible here, by design.** `code/pipeline/` documents the evaluation protocol (window
-unification, baseline re-runs, metric recomputation) but needs the third-party repositories and the
-trained checkpoints, which are not redistributed; `analysis/cscan_final.py` needs the prediction
-arrays (~30 GB) and is kept only for provenance. No model can be re-trained or re-evaluated from
-this bundle, and no reviewer is expected to: the released per-series tables are the level at which
-the reported numbers are meant to be checked.
+## Scope of this bundle
+
+This bundle contains the evaluation *outputs* and the code that turns them into the paper's numbers.
+It does not contain model implementations, trained checkpoints or prediction arrays, so the forecasts
+themselves cannot be regenerated from it; `analysis/cscan_final.py` is the one script that needs the
+arrays (it is kept so that the same sweep can be re-run by anyone who has them, while its raw output
+is shipped as `results/cscan.csv`). For a reader who does want to rebuild the full pipeline,
+`code/pipeline/` documents exactly what was run, and the paper's Section 3 lists the third-party
+repositories and datasets that the runs started from.
 
 ## Reproducing a number
 
