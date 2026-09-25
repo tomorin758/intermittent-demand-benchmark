@@ -1,0 +1,80 @@
+quantity,dataset,file,notes
+"pooled metrics, Autoformer",parts,metrics/pooled/parts/Autoformer.json,metric_comprehensive output
+"pooled metrics, Chronos",parts,metrics/pooled/parts/Chronos.json,metric_comprehensive output
+"pooled metrics, Croston",parts,metrics/pooled/parts/Croston.json,metric_comprehensive output
+"pooled metrics, DLinear",parts,metrics/pooled/parts/DLinear.json,metric_comprehensive output
+"pooled metrics, DeepAR-negbin",parts,metrics/pooled/parts/DeepAR-negbin.json,metric_comprehensive output
+"pooled metrics, DeepAR",parts,metrics/pooled/parts/DeepAR.json,metric_comprehensive output
+"pooled metrics, FEDformer",parts,metrics/pooled/parts/FEDformer.json,metric_comprehensive output
+"pooled metrics, HurdleDLinear",parts,metrics/pooled/parts/HurdleDLinear.json,metric_comprehensive output
+"pooled metrics, LSTM",parts,metrics/pooled/parts/LSTM.json,metric_comprehensive output
+"pooled metrics, MOMENT",parts,metrics/pooled/parts/MOMENT.json,metric_comprehensive output
+"pooled metrics, Moirai",parts,metrics/pooled/parts/Moirai.json,metric_comprehensive output
+"pooled metrics, PatchMixer",parts,metrics/pooled/parts/PatchMixer.json,metric_comprehensive output
+"pooled metrics, PatchTCN",parts,metrics/pooled/parts/PatchTCN.json,metric_comprehensive output
+"pooled metrics, PatchTSMixer",parts,metrics/pooled/parts/PatchTSMixer.json,metric_comprehensive output
+"pooled metrics, PatchTST",parts,metrics/pooled/parts/PatchTST.json,metric_comprehensive output
+"pooled metrics, SBA",parts,metrics/pooled/parts/SBA.json,metric_comprehensive output
+"pooled metrics, TCN",parts,metrics/pooled/parts/TCN.json,metric_comprehensive output
+"pooled metrics, TSB",parts,metrics/pooled/parts/TSB.json,metric_comprehensive output
+"pooled metrics, TTM",parts,metrics/pooled/parts/TTM.json,metric_comprehensive output
+"pooled metrics, TimesFM",parts,metrics/pooled/parts/TimesFM.json,metric_comprehensive output
+"pooled metrics, TweedieGP",parts,metrics/pooled/parts/TweedieGP.json,metric_comprehensive output
+"pooled metrics, WaveNet-like",parts,metrics/pooled/parts/WaveNet-like.json,metric_comprehensive output
+"per-series metrics, all models",parts,metrics/perseries/parts/,25 columns incl. TP/FP/FN counts
+LaTeX result table,parts,tables/results_parts.tex,
+LaTeX extended table,parts,tables/results_extended_parts.tex,
+"pooled metrics, Autoformer",fresh_retail,metrics/pooled/fresh_retail/Autoformer.json,metric_comprehensive output
+"pooled metrics, Chronos",fresh_retail,metrics/pooled/fresh_retail/Chronos.json,metric_comprehensive output
+"pooled metrics, Croston",fresh_retail,metrics/pooled/fresh_retail/Croston.json,metric_comprehensive output
+"pooled metrics, DLinear",fresh_retail,metrics/pooled/fresh_retail/DLinear.json,metric_comprehensive output
+"pooled metrics, DeepAR-negbin",fresh_retail,metrics/pooled/fresh_retail/DeepAR-negbin.json,metric_comprehensive output
+"pooled metrics, DeepAR",fresh_retail,metrics/pooled/fresh_retail/DeepAR.json,metric_comprehensive output
+"pooled metrics, FEDformer",fresh_retail,metrics/pooled/fresh_retail/FEDformer.json,metric_comprehensive output
+"pooled metrics, HurdleDLinear",fresh_retail,metrics/pooled/fresh_retail/HurdleDLinear.json,metric_comprehensive output
+"pooled metrics, LSTM",fresh_retail,metrics/pooled/fresh_retail/LSTM.json,metric_comprehensive output
+"pooled metrics, MOMENT",fresh_retail,metrics/pooled/fresh_retail/MOMENT.json,metric_comprehensive output
+"pooled metrics, Moirai",fresh_retail,metrics/pooled/fresh_retail/Moirai.json,metric_comprehensive output
+"pooled metrics, PatchMixer",fresh_retail,metrics/pooled/fresh_retail/PatchMixer.json,metric_comprehensive output
+"pooled metrics, PatchTCN",fresh_retail,metrics/pooled/fresh_retail/PatchTCN.json,metric_comprehensive output
+"pooled metrics, PatchTSMixer",fresh_retail,metrics/pooled/fresh_retail/PatchTSMixer.json,metric_comprehensive output
+"pooled metrics, PatchTST",fresh_retail,metrics/pooled/fresh_retail/PatchTST.json,metric_comprehensive output
+"pooled metrics, SBA",fresh_retail,metrics/pooled/fresh_retail/SBA.json,metric_comprehensive output
+"pooled metrics, TCN",fresh_retail,metrics/pooled/fresh_retail/TCN.json,metric_comprehensive output
+"pooled metrics, TSB",fresh_retail,metrics/pooled/fresh_retail/TSB.json,metric_comprehensive output
+"pooled metrics, TTM",fresh_retail,metrics/pooled/fresh_retail/TTM.json,metric_comprehensive output
+"pooled metrics, TimesFM",fresh_retail,metrics/pooled/fresh_retail/TimesFM.json,metric_comprehensive output
+"pooled metrics, TweedieGP",fresh_retail,metrics/pooled/fresh_retail/TweedieGP.json,metric_comprehensive output
+"pooled metrics, WaveNet-like",fresh_retail,metrics/pooled/fresh_retail/WaveNet-like.json,metric_comprehensive output
+"per-series metrics, all models",fresh_retail,metrics/perseries/fresh_retail/,25 columns incl. TP/FP/FN counts
+LaTeX result table,fresh_retail,tables/results_fresh.tex,
+LaTeX extended table,fresh_retail,tables/results_extended_fresh.tex,
+"pooled metrics, Autoformer",m5,metrics/pooled/m5/Autoformer.json,metric_comprehensive output
+"pooled metrics, Chronos",m5,metrics/pooled/m5/Chronos.json,metric_comprehensive output
+"pooled metrics, Croston",m5,metrics/pooled/m5/Croston.json,metric_comprehensive output
+"pooled metrics, DLinear",m5,metrics/pooled/m5/DLinear.json,metric_comprehensive output
+"pooled metrics, DeepAR-negbin",m5,metrics/pooled/m5/DeepAR-negbin.json,metric_comprehensive output
+"pooled metrics, DeepAR",m5,metrics/pooled/m5/DeepAR.json,metric_comprehensive output
+"pooled metrics, FEDformer",m5,metrics/pooled/m5/FEDformer.json,metric_comprehensive output
+"pooled metrics, HurdleDLinear",m5,metrics/pooled/m5/HurdleDLinear.json,metric_comprehensive output
+"pooled metrics, LSTM",m5,metrics/pooled/m5/LSTM.json,metric_comprehensive output
+"pooled metrics, MOMENT",m5,metrics/pooled/m5/MOMENT.json,metric_comprehensive output
+"pooled metrics, Moirai",m5,metrics/pooled/m5/Moirai.json,metric_comprehensive output
+"pooled metrics, PatchMixer",m5,metrics/pooled/m5/PatchMixer.json,metric_comprehensive output
+"pooled metrics, PatchTCN",m5,metrics/pooled/m5/PatchTCN.json,metric_comprehensive output
+"pooled metrics, PatchTSMixer",m5,metrics/pooled/m5/PatchTSMixer.json,metric_comprehensive output
+"pooled metrics, PatchTST",m5,metrics/pooled/m5/PatchTST.json,metric_comprehensive output
+"pooled metrics, SBA",m5,metrics/pooled/m5/SBA.json,metric_comprehensive output
+"pooled metrics, TCN",m5,metrics/pooled/m5/TCN.json,metric_comprehensive output
+"pooled metrics, TSB",m5,metrics/pooled/m5/TSB.json,metric_comprehensive output
+"pooled metrics, TTM",m5,metrics/pooled/m5/TTM.json,metric_comprehensive output
+"pooled metrics, Timer",m5,metrics/pooled/m5/Timer.json,metric_comprehensive output
+"pooled metrics, TimesFM",m5,metrics/pooled/m5/TimesFM.json,metric_comprehensive output
+"pooled metrics, TweedieGP",m5,metrics/pooled/m5/TweedieGP.json,metric_comprehensive output
+"pooled metrics, WaveNet-like",m5,metrics/pooled/m5/WaveNet-like.json,metric_comprehensive output
+"per-series metrics, all models",m5,metrics/perseries/m5/,25 columns incl. TP/FP/FN counts
+LaTeX result table,m5,tables/results_m5.tex,
+LaTeX extended table,m5,tables/results_extended_m5.tex,
+Figure 1 (reorder),all,analysis/make_fig_reorder_unified.py,reads tables/*_unified.csv
+paired bootstrap intervals,all,analysis/bootstrap_final.py,"B=4000, resampling series"
+threshold sweep,all,analysis/cscan_final.py,"c in {0.1,...,2.0}"
