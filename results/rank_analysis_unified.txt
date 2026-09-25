@@ -1,0 +1,149 @@
+============================================================================================
+A. active columns (a column counts as active if at least one model has a value)
+============================================================================================
+  parts                models= 22  active=14/16  always empty: ['(q10, q25] RMSE', '(q25, q50] RMSE']
+  fresh_retail         models= 22  active=14/16  always empty: ['(q10, q25] RMSE', '(q25, q50] RMSE']
+  m5                   models= 23  active=15/16  always empty: ['(q10, q25] RMSE']
+
+============================================================================================
+B. redundancy: |rho| >= 0.95 between metric pairs
+============================================================================================
+  parts: 3 redundant pairs
+     MAE                  ~ (q50, q75] RMSE      +0.989
+     Recall               ~ F1 score             +0.986
+     RMSE                 ~ (q75, q90] RMSE      +0.964
+  fresh_retail: 15 redundant pairs
+     RMSE                 ~ (q75, q90] RMSE      +0.995
+     RMSE                 ~ smooth RMSE          +0.978
+     (q90, ∞) RMSE        ~ smooth RMSE          +0.977
+     Precision            ~ (q50, q75] RMSE      -0.976
+     (q75, q90] RMSE      ~ smooth RMSE          +0.973
+     (q50, q75] RMSE      ~ (q75, q90] RMSE      +0.970
+     RMSE                 ~ (q50, q75] RMSE      +0.968
+     Precision            ~ MAE                  -0.967
+     RMSE                 ~ (q90, ∞) RMSE        +0.961
+     Precision            ~ RMSE                 -0.960
+     MAE                  ~ (q90, ∞) RMSE        +0.956
+     MAE                  ~ (q50, q75] RMSE      +0.953
+     (q50, q75] RMSE      ~ intermittent RMSE    +0.953
+     (q75, q90] RMSE      ~ (q90, ∞) RMSE        +0.952
+     Precision            ~ (q75, q90] RMSE      -0.951
+  m5: 15 redundant pairs
+     RMSE                 ~ (q90, ∞) RMSE        +0.993
+     RMSE                 ~ lumpy RMSE           +0.984
+     (q90, ∞) RMSE        ~ lumpy RMSE           +0.980
+     (q25, q50] RMSE      ~ (q50, q75] RMSE      +0.976
+     RMSE                 ~ (q75, q90] RMSE      +0.976
+     Recall               ~ F1 score             +0.975
+     intermittent RMSE    ~ lumpy RMSE           +0.974
+     MAE                  ~ RMSE                 +0.969
+     MAE                  ~ (q75, q90] RMSE      +0.965
+     RMSE                 ~ intermittent RMSE    +0.965
+     MAE                  ~ (q90, ∞) RMSE        +0.964
+     Precision            ~ MAE                  -0.964
+     (q90, ∞) RMSE        ~ intermittent RMSE    +0.960
+     (q75, q90] RMSE      ~ lumpy RMSE           +0.958
+     (q75, q90] RMSE      ~ (q90, ∞) RMSE        +0.955
+
+============================================================================================
+C. rank movement relative to the non-zero MAE axis
+============================================================================================
+
+  parts  (base = non-zero MAE, 22 models)
+    vs QL(0.5)              rho=-0.635   |rank diff|>=5: 19/22  max=20
+    vs Precision            rho=-0.023   |rank diff|>=5: 14/22  max=21
+    vs Recall               rho=+0.846   |rank diff|>=5:  3/22  max=8
+    vs F1 score             rho=+0.779   |rank diff|>=5:  8/22  max=10
+    vs RMSE                 rho=+0.875   |rank diff|>=5:  6/22  max=6
+    vs [0, q10] RMSE        rho=+0.878   |rank diff|>=5:  3/22  max=8
+    vs (q50, q75] RMSE      rho=+0.989   |rank diff|>=5:  0/22  max=3
+    vs (q75, q90] RMSE      rho=+0.793   |rank diff|>=5:  9/22  max=8
+    vs (q90, ∞) RMSE        rho=+0.607   |rank diff|>=5: 11/22  max=10
+    vs intermittent RMSE    rho=+0.105   |rank diff|>=5: 17/22  max=18
+    vs lumpy RMSE           rho=-0.039   |rank diff|>=5: 20/22  max=16
+    vs smooth RMSE          rho=-0.143   |rank diff|>=5: 16/22  max=18
+    vs erratic RMSE         rho=-0.324   |rank diff|>=5: 17/22  max=19
+
+  fresh_retail  (base = non-zero MAE, 22 models)
+    vs QL(0.5)              rho=+0.909   |rank diff|>=5:  2/22  max=6
+    vs Precision            rho=-0.967   |rank diff|>=5: 17/22  max=21
+    vs Recall               rho=-0.110   |rank diff|>=5: 15/22  max=20
+    vs F1 score             rho=-0.530   |rank diff|>=5: 18/22  max=20
+    vs RMSE                 rho=+0.948   |rank diff|>=5:  1/22  max=6
+    vs [0, q10] RMSE        rho=+0.535   |rank diff|>=5:  3/22  max=20
+    vs (q50, q75] RMSE      rho=+0.953   |rank diff|>=5:  1/22  max=6
+    vs (q75, q90] RMSE      rho=+0.947   |rank diff|>=5:  1/22  max=5
+    vs (q90, ∞) RMSE        rho=+0.956   |rank diff|>=5:  0/22  max=4
+    vs intermittent RMSE    rho=+0.874   |rank diff|>=5:  2/22  max=9
+    vs lumpy RMSE           rho=+0.413   |rank diff|>=5: 10/22  max=20
+    vs smooth RMSE          rho=+0.938   |rank diff|>=5:  2/22  max=5
+    vs erratic RMSE         rho=+0.785   |rank diff|>=5:  5/22  max=10
+
+  m5  (base = non-zero MAE, 23 models)
+    vs QL(0.5)              rho=+0.266   |rank diff|>=5: 15/23  max=16
+    vs Precision            rho=-0.964   |rank diff|>=5: 18/23  max=22
+    vs Recall               rho=+0.068   |rank diff|>=5: 11/23  max=20
+    vs F1 score             rho=-0.037   |rank diff|>=5: 14/23  max=20
+    vs RMSE                 rho=+0.969   |rank diff|>=5:  0/23  max=4
+    vs [0, q10] RMSE        rho=+0.375   |rank diff|>=5:  9/23  max=20
+    vs (q25, q50] RMSE      rho=+0.492   |rank diff|>=5:  7/23  max=20
+    vs (q50, q75] RMSE      rho=+0.532   |rank diff|>=5:  4/23  max=20
+    vs (q75, q90] RMSE      rho=+0.965   |rank diff|>=5:  0/23  max=4
+    vs (q90, ∞) RMSE        rho=+0.964   |rank diff|>=5:  0/23  max=4
+    vs intermittent RMSE    rho=+0.910   |rank diff|>=5:  2/23  max=8
+    vs lumpy RMSE           rho=+0.946   |rank diff|>=5:  2/23  max=5
+    vs smooth RMSE          rho=+0.805   |rank diff|>=5:  8/23  max=11
+    vs erratic RMSE         rho=+0.639   |rank diff|>=5:  9/23  max=14
+
+============================================================================================
+D. best model per axis
+============================================================================================
+
+  parts
+    QL(0.5)              DeepAR(negbin)     0.296
+    Precision            TCN                0.474
+    Recall               TCN                0.089
+    F1 score             TCN                0.150
+    MAE                  TSB                0.944
+    RMSE                 TSB                1.559
+    [0, q10] RMSE        WaveNet-like       0.406
+    (q50, q75] RMSE      TSB                1.161
+    (q75, q90] RMSE      TSB                2.003
+    (q90, ∞) RMSE        FEDformer          4.490
+    intermittent RMSE    PatchTSMixer       1.110
+    lumpy RMSE           PatchMixer         0.864
+    smooth RMSE          DeepAR             0.958
+    erratic RMSE         MOMENT             0.582
+
+  fresh_retail
+    QL(0.5)              TimesFM            0.270
+    Precision            HurdleDLinear      0.360
+    Recall               MOMENT             0.049
+    F1 score             MOMENT             0.086
+    MAE                  PatchTCN           0.605
+    RMSE                 PatchTCN           0.895
+    [0, q10] RMSE        MOMENT             0.350
+    (q50, q75] RMSE      PatchTCN           0.854
+    (q75, q90] RMSE      PatchTCN           1.121
+    (q90, ∞) RMSE        TimesFM            2.289
+    intermittent RMSE    PatchMixer         0.609
+    lumpy RMSE           MOMENT             1.034
+    smooth RMSE          TimesFM            1.080
+    erratic RMSE         TimesFM            1.934
+
+  m5
+    QL(0.5)              TimesFM            0.478
+    Precision            HurdleDLinear      0.656
+    Recall               Timer              0.224
+    F1 score             Timer              0.341
+    MAE                  PatchTSMixer       1.589
+    RMSE                 PatchTSMixer       2.945
+    [0, q10] RMSE        Timer              0.761
+    (q25, q50] RMSE      Timer              1.062
+    (q50, q75] RMSE      Timer              1.832
+    (q75, q90] RMSE      PatchTSMixer       2.812
+    (q90, ∞) RMSE        PatchTSMixer       8.013
+    intermittent RMSE    PatchTSMixer       1.497
+    lumpy RMSE           PatchTSMixer       2.801
+    smooth RMSE          PatchTSMixer       4.222
+    erratic RMSE         PatchMixer         5.383

@@ -11,11 +11,26 @@ The pooled metrics use the repo's own utils.metrics.metric_comprehensive (same f
 produced the published numbers), with historical_data = first 70% of the history table in the
 SAME column order as the predictions (the original permuted runs mismatched these).
 """
+
+# ---------------------------------------------------------------------------
+# PROTOCOL RECORD, NOT RUNNABLE FROM THIS BUNDLE.
+# These scripts re-run models or re-extract their predictions, so they need the third-party
+# repositories (PatchTST harness, TweedieGP, granite-tsfm, MOMENT/Timer/TimesFM) and the trained
+# checkpoints, none of which are redistributed here. Set WORKSPACE to the directory that holds
+# both the paper workspace and those repositories; the defaults below only document the layout
+# used in the paper. What *is* reproducible from this bundle is described in README.md
+# ("What is reproducible from this bundle").
+# ---------------------------------------------------------------------------
+import os as _os
+WORKSPACE = _os.environ.get('WORKSPACE', _os.path.expanduser('~'))
+PAPER = _os.environ.get('PAPER_DIR', _os.path.join(WORKSPACE, 'Projects', 'paper'))
+PATCHTST = _os.environ.get('PATCHTST_DIR', _os.path.join(WORKSPACE, 'Projects', 'PatchTST'))
+TWEEDIEGP = _os.environ.get('TWEEDIEGP_DIR', _os.path.join(WORKSPACE, 'Projects', 'TweedieGP'))
 import os, sys, csv, json
 import numpy as np
 
-PAPER = '${PAPER_ROOT}/Projects/paper'
-sys.path.insert(0, '${PAPER_ROOT}/Projects/PatchTST/PatchTST_supervised')
+PAPER = PAPER
+sys.path.insert(0, _os.path.join(PATCHTST, 'PatchTST_supervised'))
 from utils.metrics import metric_comprehensive                      # noqa: E402
 
 DS_ALL = {'parts': ('parts.csv', 3), 'fresh_retail': ('fresh_retail.csv', 7), 'm5': ('m5.csv', 28)}

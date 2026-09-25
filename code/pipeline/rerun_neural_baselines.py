@@ -8,11 +8,26 @@ candidates exist the one that reproduces the stored original-window predictions
 
 Writes data/final/<ds>/<Model>/{pred,true}.npy
 """
+
+# ---------------------------------------------------------------------------
+# PROTOCOL RECORD, NOT RUNNABLE FROM THIS BUNDLE.
+# These scripts re-run models or re-extract their predictions, so they need the third-party
+# repositories (PatchTST harness, TweedieGP, granite-tsfm, MOMENT/Timer/TimesFM) and the trained
+# checkpoints, none of which are redistributed here. Set WORKSPACE to the directory that holds
+# both the paper workspace and those repositories; the defaults below only document the layout
+# used in the paper. What *is* reproducible from this bundle is described in README.md
+# ("What is reproducible from this bundle").
+# ---------------------------------------------------------------------------
+import os as _os
+WORKSPACE = _os.environ.get('WORKSPACE', _os.path.expanduser('~'))
+PAPER = _os.environ.get('PAPER_DIR', _os.path.join(WORKSPACE, 'Projects', 'paper'))
+PATCHTST = _os.environ.get('PATCHTST_DIR', _os.path.join(WORKSPACE, 'Projects', 'PatchTST'))
+TWEEDIEGP = _os.environ.get('TWEEDIEGP_DIR', _os.path.join(WORKSPACE, 'Projects', 'TweedieGP'))
 import os, sys, csv, json, glob
 import numpy as np
 
-PAPER = '${PAPER_ROOT}/Projects/paper'
-REPO = '${PAPER_ROOT}/Projects/PatchTST'
+PAPER = PAPER
+REPO = PATCHTST
 sys.path.insert(0, REPO)
 os.environ.setdefault('CUDA_VISIBLE_DEVICES', '0')
 

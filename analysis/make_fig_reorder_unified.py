@@ -6,7 +6,14 @@ matplotlib.rcParams['pdf.fonttype']=42
 matplotlib.rcParams['ps.fonttype']=42
 import matplotlib.pyplot as plt
 
-FILES={'Parts':'data/parts_unified.csv','Fresh':'data/fresh_retail_unified.csv','M5':'data/m5_unified.csv'}
+import os as _os
+_BUNDLE=_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+_TABLES=_os.environ.get('TABLES_DIR', _os.path.join(_BUNDLE,'tables'))
+_RESULTS=_os.environ.get('RESULTS_DIR', _os.path.join(_BUNDLE,'results'))
+_os.makedirs(_RESULTS, exist_ok=True)
+FILES={'Parts':_os.path.join(_TABLES,'parts_unified.csv'),
+       'Fresh':_os.path.join(_TABLES,'fresh_retail_unified.csv'),
+       'M5':_os.path.join(_TABLES,'m5_unified.csv')}
 AXES=['(q90, ∞) RMSE','intermittent RMSE','lumpy RMSE','smooth RMSE']
 LABEL={'(q90, ∞) RMSE':'Tail\n$(q_{90},\\infty)$','intermittent RMSE':'Intermittent',
        'lumpy RMSE':'Lumpy','smooth RMSE':'Smooth'}
@@ -88,8 +95,8 @@ ax.set_title('(b) Parts: the same models cross over',fontsize=8,loc='left')
 for s in ['top','right']: ax.spines[s].set_visible(False)
 
 plt.tight_layout()
-plt.savefig('.scratch/unify/fig_reorder_unified.pdf',bbox_inches='tight')
-plt.savefig('.scratch/unify/fig_reorder_unified.png',dpi=200,bbox_inches='tight')
+plt.savefig(_os.path.join(_RESULTS,'fig_reorder.pdf'),bbox_inches='tight')
+plt.savefig(_os.path.join(_RESULTS,'fig_reorder.png'),dpi=200,bbox_inches='tight')
 
 # ---- §9.1 render-then-verify: bbox 重叠检查 ----
 import matplotlib.text as mtext
@@ -102,7 +109,7 @@ ov+=[(t.get_text(),'spine') for t,bt in texts for s,bs in spines if bt.overlaps(
 print("BBOX 重叠:", ov if ov else "无")
 oob=[t.get_text() for t,b in texts if not fig.bbox.contains(*b.p0) or not fig.bbox.contains(*b.p1)]
 print("超出画布:", oob if oob else "无")
-print("saved img/fig_reorder.pdf and .png")
+print("saved results/fig_reorder.pdf and .png")
 # print the rho table for the caption
 for ds in ['Parts','Fresh','M5']:
     D=DATA[ds]; ms=list(D); r_mae=avgrank([D[m]['MAE'] for m in ms])

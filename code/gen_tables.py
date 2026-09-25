@@ -150,7 +150,13 @@ def emit(name, display, data, cols, fname, floatenv, caption):
 def main():
     all_data = []
     for key, (fname, display) in DATA.items():
-        d = read_csv(os.path.join(DATA_DIR, fname))
+        # Inside the released artefact bundle the sheet-format CSVs live in tables/<ds>_unified.csv
+        # (there is no separate data/ directory); in the paper workspace they live in ../data/.
+        cand = [os.path.join(DATA_DIR, fname),
+                os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, 'tables',
+                             fname.replace('.csv', '_unified.csv'))]
+        path = next((c for c in cand if os.path.exists(c)), cand[0])
+        d = read_csv(path)
         all_data += d
         # core table: fits easily inside text width (single- or double-column)
         caption = ("Results on the %s dataset: every model appears twice, once scored on its own "

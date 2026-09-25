@@ -5,10 +5,25 @@ All four ran with --target FOODS_3_090__CA_3 (history column index 8412), so the
 column order is "remove column 8412, append at the end"; the true array must reproduce
 the final 28 rows of data/history/m5.csv exactly after undoing that move.
 """
+
+# ---------------------------------------------------------------------------
+# PROTOCOL RECORD, NOT RUNNABLE FROM THIS BUNDLE.
+# These scripts re-run models or re-extract their predictions, so they need the third-party
+# repositories (PatchTST harness, TweedieGP, granite-tsfm, MOMENT/Timer/TimesFM) and the trained
+# checkpoints, none of which are redistributed here. Set WORKSPACE to the directory that holds
+# both the paper workspace and those repositories; the defaults below only document the layout
+# used in the paper. What *is* reproducible from this bundle is described in README.md
+# ("What is reproducible from this bundle").
+# ---------------------------------------------------------------------------
+import os as _os
+WORKSPACE = _os.environ.get('WORKSPACE', _os.path.expanduser('~'))
+PAPER = _os.environ.get('PAPER_DIR', _os.path.join(WORKSPACE, 'Projects', 'paper'))
+PATCHTST = _os.environ.get('PATCHTST_DIR', _os.path.join(WORKSPACE, 'Projects', 'PatchTST'))
+TWEEDIEGP = _os.environ.get('TWEEDIEGP_DIR', _os.path.join(WORKSPACE, 'Projects', 'TweedieGP'))
 import numpy as np, csv, os, json
 
-PAPER = '${PAPER_ROOT}/Projects/paper'
-RES = '${PAPER_ROOT}/Projects/PatchTST/PatchTST_supervised/results'
+PAPER = PAPER
+RES = _os.path.join(PATCHTST, 'PatchTST_supervised', 'results')
 SET = {
     'DLinear': 'm5_112_28_DLinear_custom_ftM_sl112_ll28_pl28_dm512_nh8_el2_dl1_df2048_fc1_ebtimeF_dtTrue_Exp_0',
     'HurdleDLinear': 'm5_112_28_hurdle_HurdleDLinear_custom_ftM_sl112_ll28_pl28_dm512_nh8_el2_dl1_df2048_fc1_ebtimeF_dtTrue_Exp_0',

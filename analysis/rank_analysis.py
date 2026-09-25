@@ -1,6 +1,7 @@
 """Rank / metric-independence analysis on a set of Sheet-format CSVs.
 
-Usage:  python rank_analysis.py <parts.csv> <fresh.csv> <m5.csv> <tag>
+Usage:  python analysis/rank_analysis.py <parts_unified.csv> <fresh_unified.csv> <m5_unified.csv> <tag>
+        (the three files ship in tables/; output goes to results/)
 Writes .scratch/unify/rank_analysis_<tag>.txt and prints the same report.
 
 Rows used are the TRUNCATED (tau=0.5) rows, i.e. the c=0.5 variant, matching the
@@ -9,7 +10,9 @@ published analysis; the reference axis is the non-zero MAE column.
 import csv, sys, math, os
 from itertools import combinations
 
-PAPER = '${PAPER_ROOT}/Projects/paper'
+BUNDLE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RESULTS = os.environ.get('RESULTS_DIR', os.path.join(BUNDLE, 'results'))
+os.makedirs(RESULTS, exist_ok=True)
 AXES = ['QL(0.5)', 'Precision', 'Recall', 'F1 score', 'MAE', 'RMSE', '[0, q10] RMSE',
         '(q10, q25] RMSE', '(q25, q50] RMSE', '(q50, q75] RMSE', '(q75, q90] RMSE',
         '(q90, ∞) RMSE', 'intermittent RMSE', 'lumpy RMSE', 'smooth RMSE', 'erratic RMSE']
@@ -130,9 +133,9 @@ def main():
             best = min(vals, key=lambda m: vals[m])
             p(f'    {ax:20s} {best:18s} {vals[best]:.3f}')
 
-    with open(os.path.join(PAPER, f'.scratch/unify/rank_analysis_{tag}.txt'), 'w') as fh:
+    with open(os.path.join(RESULTS, f'rank_analysis_{tag}.txt'), 'w') as fh:
         fh.write('\n'.join(out) + '\n')
-    p(f'\n[saved] .scratch/unify/rank_analysis_{tag}.txt')
+    p(f'\n[saved] results/rank_analysis_{tag}.txt')
 
 
 main()

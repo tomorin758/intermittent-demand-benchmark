@@ -3,9 +3,24 @@
 Run after every writer has stopped:  python verify_final.py
 Exit code 1 if anything is off.
 """
+
+# ---------------------------------------------------------------------------
+# PROTOCOL RECORD, NOT RUNNABLE FROM THIS BUNDLE.
+# These scripts re-run models or re-extract their predictions, so they need the third-party
+# repositories (PatchTST harness, TweedieGP, granite-tsfm, MOMENT/Timer/TimesFM) and the trained
+# checkpoints, none of which are redistributed here. Set WORKSPACE to the directory that holds
+# both the paper workspace and those repositories; the defaults below only document the layout
+# used in the paper. What *is* reproducible from this bundle is described in README.md
+# ("What is reproducible from this bundle").
+# ---------------------------------------------------------------------------
+import os as _os
+WORKSPACE = _os.environ.get('WORKSPACE', _os.path.expanduser('~'))
+PAPER = _os.environ.get('PAPER_DIR', _os.path.join(WORKSPACE, 'Projects', 'paper'))
+PATCHTST = _os.environ.get('PATCHTST_DIR', _os.path.join(WORKSPACE, 'Projects', 'PatchTST'))
+TWEEDIEGP = _os.environ.get('TWEEDIEGP_DIR', _os.path.join(WORKSPACE, 'Projects', 'TweedieGP'))
 import numpy as np, csv, os, sys
 
-PAPER = '${PAPER_ROOT}/Projects/paper'
+PAPER = PAPER
 DS = {'parts': ('parts.csv', 3), 'fresh_retail': ('fresh_retail.csv', 7), 'm5': ('m5.csv', 28)}
 bad = 0
 for ds, (hf, H) in DS.items():

@@ -6,9 +6,24 @@ unified metric JSONs, so that gen_tables.py / make_fig_reorder.py can consume th
 Row order follows the existing Sheet files (model order preserved); values come from
 data/metrics_final/<ds>/<model>.json (metric_comprehensive output on the unified window).
 """
+
+# ---------------------------------------------------------------------------
+# PROTOCOL RECORD, NOT RUNNABLE FROM THIS BUNDLE.
+# These scripts re-run models or re-extract their predictions, so they need the third-party
+# repositories (PatchTST harness, TweedieGP, granite-tsfm, MOMENT/Timer/TimesFM) and the trained
+# checkpoints, none of which are redistributed here. Set WORKSPACE to the directory that holds
+# both the paper workspace and those repositories; the defaults below only document the layout
+# used in the paper. What *is* reproducible from this bundle is described in README.md
+# ("What is reproducible from this bundle").
+# ---------------------------------------------------------------------------
+import os as _os
+WORKSPACE = _os.environ.get('WORKSPACE', _os.path.expanduser('~'))
+PAPER = _os.environ.get('PAPER_DIR', _os.path.join(WORKSPACE, 'Projects', 'paper'))
+PATCHTST = _os.environ.get('PATCHTST_DIR', _os.path.join(WORKSPACE, 'Projects', 'PatchTST'))
+TWEEDIEGP = _os.environ.get('TWEEDIEGP_DIR', _os.path.join(WORKSPACE, 'Projects', 'TweedieGP'))
 import csv, json, os, re, sys
 
-PAPER = '${PAPER_ROOT}/Projects/paper'
+PAPER = PAPER
 DS = {'parts': ('parts.csv', 'Parts', 'Parts - Sheet1.csv'),
       'fresh_retail': ('fresh_retail.csv', 'Fresh', 'Fresh Retail - Sheet1.csv'),
       'm5': ('m5.csv', 'M5', 'M5 - Sheet1.csv')}

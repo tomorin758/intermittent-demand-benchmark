@@ -7,10 +7,25 @@ For each (dataset, method):
   * then predict the final H periods (origin = L-H) from the full preceding history and
     write data/final/<ds>/<model>/{pred,true}.npy.
 """
+
+# ---------------------------------------------------------------------------
+# PROTOCOL RECORD, NOT RUNNABLE FROM THIS BUNDLE.
+# These scripts re-run models or re-extract their predictions, so they need the third-party
+# repositories (PatchTST harness, TweedieGP, granite-tsfm, MOMENT/Timer/TimesFM) and the trained
+# checkpoints, none of which are redistributed here. Set WORKSPACE to the directory that holds
+# both the paper workspace and those repositories; the defaults below only document the layout
+# used in the paper. What *is* reproducible from this bundle is described in README.md
+# ("What is reproducible from this bundle").
+# ---------------------------------------------------------------------------
+import os as _os
+WORKSPACE = _os.environ.get('WORKSPACE', _os.path.expanduser('~'))
+PAPER = _os.environ.get('PAPER_DIR', _os.path.join(WORKSPACE, 'Projects', 'paper'))
+PATCHTST = _os.environ.get('PATCHTST_DIR', _os.path.join(WORKSPACE, 'Projects', 'PatchTST'))
+TWEEDIEGP = _os.environ.get('TWEEDIEGP_DIR', _os.path.join(WORKSPACE, 'Projects', 'TweedieGP'))
 import os, sys, csv, json
 import numpy as np
 
-REPO = '${PAPER_ROOT}/Projects/PatchTST'
+REPO = PATCHTST
 sys.path.insert(0, REPO)
 os.chdir(REPO)  # intermittent_baseline imports 'PatchTST_supervised/utils/metrics' relatively
 
@@ -18,7 +33,7 @@ from intermittent_baseline import make_forecast   # noqa: E402
 from croston_baseline import croston_forecast     # noqa: E402
 
 HF = {'parts': 'parts.csv', 'fresh_retail': 'fresh_retail.csv', 'm5': 'm5.csv'}
-PAPER = '${PAPER_ROOT}/Projects/paper'
+PAPER = PAPER
 OUT = os.path.join(PAPER, 'data/final')
 ALPHA = 0.1
 

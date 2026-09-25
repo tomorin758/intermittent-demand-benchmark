@@ -1,5 +1,5 @@
-import numpy as np, os, json, sys
-ROOT="data/final"
+import numpy as np, os, json, sys, csv
+ROOT=__import__('os').environ.get('PRED_DIR','data/final')   # prediction arrays are NOT shipped; see results/cscan.csv
 DS=[a for a in sys.argv[1:] if a] or ['parts','fresh_retail','m5']
 CS=[0.1,0.25,0.5,0.75,1.0,1.5,2.0]
 def metrics(p,t,c):
@@ -54,6 +54,24 @@ for ds in DS:
         rc=avgrank([res[m][c][3] for m in ms])
         mv=max(abs(base[i]-rc[i]) for i in range(len(ms)))
         print(f"    c={c:<5} rho={pear(base,rc):+.3f}  最大名次变动={mv:.0f}")
+_resdir = os.environ.get('RESULTS_DIR', 'results')
+os.makedirs(_resdir, exist_ok=True)
 json.dump({ds:{m:{str(c):v for c,v in r.items()} for m,r in OUT[ds].items()} for ds in OUT},
-          open('.scratch/cscan_all.json','w'))
-print("\n[saved] .scratch/cscan_all.json")
+          open(os.path.join(_resdir,'cscan_all.json'),'w'))
+print(f"\n[saved] {_resdir}/cscan_all.json")
+
+# ---------------------------------------------------------------------------
+# Machine-readable dump of the sweep. The prediction arrays are not part of the
+# artefact bundle, so this CSV (results/cscan.csv) is what makes the
+# threshold-sensitivity claims in the paper checkable without re-running models.
+# ---------------------------------------------------------------------------
+_resdir = os.environ.get('RESULTS_DIR', 'results')
+os.makedirs(_resdir, exist_ok=True)
+with open(os.path.join(_resdir, 'cscan.csv'), 'w', newline='') as _fh:
+    _w = csv.writer(_fh)
+    _w.writerow(['dataset', 'model', 'c', 'ql_trunc', 'precision0', 'recall0', 'f1'])
+    for _ds, _models in OUT.items():
+        for _m, _per_c in _models.items():
+            for _c, (_ql, _pr, _rc, _f1) in sorted(_per_c.items()):
+                _w.writerow([_ds, _m, _c, f'{_ql:.6g}', f'{_pr:.6g}', f'{_rc:.6g}', f'{_f1:.6g}'])
+print(f'[saved] {_resdir}/cscan.csv')

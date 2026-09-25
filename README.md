@@ -37,6 +37,27 @@ and the fresh-retail series are daily aggregates of **FreshRetailNet-50K**
 (`Dingdong-Inc/FreshRetailNet-50K`, CC-BY-4.0; Wang et al., arXiv:2505.16319). The M5 history table
 is not redistributed; M5 enters only through derived metrics.
 
+## What is reproducible from this bundle
+
+Everything below runs from the bundle alone (numpy + pandas; matplotlib only for the figure):
+
+| Command | Produces | Paper claim it backs |
+|---|---|---|
+| `python code/gen_tables.py` | the six LaTeX tables in `tables/` | every number in Tables 2-7 |
+| `python analysis/check_consistency.py` | `results/consistency_report.md` | the tables agree cell-by-cell with `metrics/pooled/` (335/335 checks) |
+| `python analysis/bootstrap_final.py bundle ql_raw` | `results/bootstrap_ql_raw.{txt,json}` | the leading groups and the "N of M pairs are separated" counts (Section 4) |
+| `python analysis/bootstrap_final.py bundle f1_trunc` | `results/bootstrap_f1_trunc.{txt,json}` | the zero-detection leading groups |
+| `python analysis/rank_analysis.py tables/parts_unified.csv tables/fresh_retail_unified.csv tables/m5_unified.csv unified` | `results/rank_analysis_unified.txt` | metric redundancy and rank-reversal statistics (Section 4.4) |
+| `python analysis/make_fig_reorder_unified.py` | `results/fig_reorder.pdf` | Figure 1 |
+| (pre-computed) `results/cscan.csv` | per-model zero-detection metrics at c in {0.1 ... 2.0} | the threshold-sensitivity section |
+
+**Not reproducible here, by design.** `code/pipeline/` documents the evaluation protocol (window
+unification, baseline re-runs, metric recomputation) but needs the third-party repositories and the
+trained checkpoints, which are not redistributed; `analysis/cscan_final.py` needs the prediction
+arrays (~30 GB) and is kept only for provenance. No model can be re-trained or re-evaluated from
+this bundle, and no reviewer is expected to: the released per-series tables are the level at which
+the reported numbers are meant to be checked.
+
 ## Reproducing a number
 
 1. `metrics/pooled/<ds>/<model>.json` holds the pooled value of every metric.

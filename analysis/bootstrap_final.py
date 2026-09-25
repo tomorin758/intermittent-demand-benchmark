@@ -8,13 +8,19 @@ of the difference in the pooled metric.
 Vectorised: one weight matrix per chunk is reused for all pairs, and all pairs are evaluated
 as a single W @ D product.
 
-Usage: python bootstrap_final.py [tag] [metric]
+Usage: python analysis/bootstrap_final.py <tag> <metric>
    metric in {ql_raw (default), ql_trunc, f1_trunc, mae_nz_raw}
+Reads metrics/perseries/<dataset>/*.csv and writes results/bootstrap_<metric>.{txt,json}.
 """
 import csv, os, sys, itertools, json
 import numpy as np
 
-PAPER = '${PAPER_ROOT}/Projects/paper'
+# This bundle is self-contained: per-series tables come from metrics/perseries/, outputs are
+# written to results/. Override with PERSERIES_DIR / RESULTS_DIR if you moved things around.
+BUNDLE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PERSERIES = os.environ.get('PERSERIES_DIR', os.path.join(BUNDLE, 'metrics', 'perseries'))
+RESULTS = os.environ.get('RESULTS_DIR', os.path.join(BUNDLE, 'results'))
+os.makedirs(RESULTS, exist_ok=True)
 DS = ['parts', 'fresh_retail', 'm5']
 tag = sys.argv[1] if len(sys.argv) > 1 else 'unified'
 METRIC = sys.argv[2] if len(sys.argv) > 2 else 'ql_raw'
@@ -35,7 +41,7 @@ COUNTS = ('tp0_trunc', 'fp0_trunc', 'fn0_trunc')
 
 def load(ds, counts=False):
     """counts=False -> {model: {series: metric value}}; counts=True -> {model: {series: (tp,fp,fn)}}"""
-    d = os.path.join(PAPER, 'data/perseries_final', ds)
+    d = os.path.join(PERSERIES, ds)
     tab = {}
     if not os.path.isdir(d):
         return tab
@@ -121,7 +127,7 @@ for ds in DS:
                    'pairs_separated': sig, 'pairs_total': len(pairs)}
     del boot
 
-with open(os.path.join(PAPER, f'.scratch/unify/bootstrap_final_{tag}_{METRIC}.txt'), 'w') as fh:
+with open(os.path.join(RESULTS, f'bootstrap_{METRIC}.txt'), 'w') as fh:
     fh.write('\n'.join(out) + '\n')
-json.dump(summary, open(os.path.join(PAPER, f'.scratch/unify/bootstrap_{METRIC}.json'), 'w'), indent=1)
-print(f'[saved] .scratch/unify/bootstrap_final_{tag}_{METRIC}.txt', flush=True)
+json.dump(summary, open(os.path.join(RESULTS, f'bootstrap_{METRIC}.json'), 'w'), indent=1)
+print(f'[saved] results/bootstrap_{METRIC}.txt', flush=True)

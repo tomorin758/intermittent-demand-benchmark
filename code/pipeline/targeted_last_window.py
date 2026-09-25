@@ -8,10 +8,25 @@ comparison against the stored array (which has windows 0..351).
 
 usage:  LASTN=4 CUDA_VISIBLE_DEVICES=... python targeted_last_window.py PatchTCN|PatchTST
 """
+
+# ---------------------------------------------------------------------------
+# PROTOCOL RECORD, NOT RUNNABLE FROM THIS BUNDLE.
+# These scripts re-run models or re-extract their predictions, so they need the third-party
+# repositories (PatchTST harness, TweedieGP, granite-tsfm, MOMENT/Timer/TimesFM) and the trained
+# checkpoints, none of which are redistributed here. Set WORKSPACE to the directory that holds
+# both the paper workspace and those repositories; the defaults below only document the layout
+# used in the paper. What *is* reproducible from this bundle is described in README.md
+# ("What is reproducible from this bundle").
+# ---------------------------------------------------------------------------
+import os as _os
+WORKSPACE = _os.environ.get('WORKSPACE', _os.path.expanduser('~'))
+PAPER = _os.environ.get('PAPER_DIR', _os.path.join(WORKSPACE, 'Projects', 'paper'))
+PATCHTST = _os.environ.get('PATCHTST_DIR', _os.path.join(WORKSPACE, 'Projects', 'PatchTST'))
+TWEEDIEGP = _os.environ.get('TWEEDIEGP_DIR', _os.path.join(WORKSPACE, 'Projects', 'TweedieGP'))
 import os, sys
 
-os.chdir('${PAPER_ROOT}/Projects/PatchTST/PatchTST_supervised')
-sys.path.insert(0, '${PAPER_ROOT}/Projects/PatchTST/PatchTST_supervised')
+os.chdir(_os.path.join(PATCHTST, 'PatchTST_supervised'))
+sys.path.insert(0, _os.path.join(PATCHTST, 'PatchTST_supervised'))
 
 ARCH = {
     'PatchTCN': ['--e_layers', '3', '--n_heads', '4', '--d_model', '32', '--d_ff', '64',
@@ -57,6 +72,6 @@ def patched(self, flag, *a, **kw):
 
 em.Exp_Main._get_data = patched
 # run_longExp.py is a top-level script (everything under __main__), so execute it directly
-SRC = '${PAPER_ROOT}/Projects/PatchTST/PatchTST_supervised/run_longExp.py'
+SRC = _os.path.join(PATCHTST, 'PatchTST_supervised', 'run_longExp.py')
 code = compile(open(SRC).read(), SRC, 'exec')
 exec(code, {'__name__': '__main__', '__file__': SRC})

@@ -4,10 +4,25 @@ The run used dataset/m5.csv with h=28 (train on days 0..1884, test 1885..1912) a
 30,490 series (no all-zero training series), so the forecast rows map 1:1 onto the history
 columns; this is verified against test_actual.npy before anything is written.
 """
+
+# ---------------------------------------------------------------------------
+# PROTOCOL RECORD, NOT RUNNABLE FROM THIS BUNDLE.
+# These scripts re-run models or re-extract their predictions, so they need the third-party
+# repositories (PatchTST harness, TweedieGP, granite-tsfm, MOMENT/Timer/TimesFM) and the trained
+# checkpoints, none of which are redistributed here. Set WORKSPACE to the directory that holds
+# both the paper workspace and those repositories; the defaults below only document the layout
+# used in the paper. What *is* reproducible from this bundle is described in README.md
+# ("What is reproducible from this bundle").
+# ---------------------------------------------------------------------------
+import os as _os
+WORKSPACE = _os.environ.get('WORKSPACE', _os.path.expanduser('~'))
+PAPER = _os.environ.get('PAPER_DIR', _os.path.join(WORKSPACE, 'Projects', 'paper'))
+PATCHTST = _os.environ.get('PATCHTST_DIR', _os.path.join(WORKSPACE, 'Projects', 'PatchTST'))
+TWEEDIEGP = _os.environ.get('TWEEDIEGP_DIR', _os.path.join(WORKSPACE, 'Projects', 'TweedieGP'))
 import numpy as np, pandas as pd, glob, os, json, sys
 
-PAPER = '${PAPER_ROOT}/Projects/paper'
-TW = '${PAPER_ROOT}/Projects/TweedieGP'
+PAPER = PAPER
+TW = TWEEDIEGP
 runs = sorted(glob.glob(os.path.join(TW, 'trained_models', 'm5_unified__*')))
 if not runs:
     sys.exit('no m5_unified__* run found under trained_models/')

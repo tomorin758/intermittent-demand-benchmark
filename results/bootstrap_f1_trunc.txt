@@ -1,0 +1,159 @@
+metric = f1_trunc   B = 4000   paired over series (identical resample for both models)
+
+================================================================================================
+parts: 22 models
+================================================================================================
+  common series: 857
+  ranking: DeepAR-negbin(0.7573) < TimesFM(0.7531) < PatchMixer(0.7490) < Chronos(0.7429) < DeepAR(0.7333) < HurdleDLinear(0.7152) < PatchTCN(0.7142) < TweedieGP(0.7114) < Moirai(0.6762) < PatchTST(0.6665) < MOMENT(0.6651) < PatchTSMixer(0.6317) < TTM(0.6187) < Autoformer(0.6007) < FEDformer(0.5997) < TSB(0.5028) < DLinear(0.4721) < SBA(0.2884) < Croston(0.2305) < WaveNet-like(0.1994) < LSTM(0.1766) < TCN(0.1497)
+  pairs: 231   CI excludes 0: 210
+  adjacent pairs:
+    DeepAR-negbin    vs TimesFM          d=+0.0042  CI=[-0.0127,+0.0219]  overlapping
+    TimesFM          vs PatchMixer       d=+0.0041  CI=[-0.0080,+0.0164]  overlapping
+    PatchMixer       vs Chronos          d=+0.0061  CI=[-0.0099,+0.0219]  overlapping
+    Chronos          vs DeepAR           d=+0.0096  CI=[-0.0074,+0.0260]  overlapping
+    DeepAR           vs HurdleDLinear    d=+0.0181  CI=[-0.0011,+0.0372]  overlapping
+    HurdleDLinear    vs PatchTCN         d=+0.0011  CI=[-0.0204,+0.0240]  overlapping
+    PatchTCN         vs TweedieGP        d=+0.0027  CI=[-0.0156,+0.0217]  overlapping
+    TweedieGP        vs Moirai           d=+0.0353  CI=[+0.0156,+0.0558]  separated
+    Moirai           vs PatchTST         d=+0.0097  CI=[-0.0092,+0.0282]  overlapping
+    PatchTST         vs MOMENT           d=+0.0013  CI=[-0.0305,+0.0329]  overlapping
+    MOMENT           vs PatchTSMixer     d=+0.0334  CI=[-0.0008,+0.0674]  overlapping
+    PatchTSMixer     vs TTM              d=+0.0130  CI=[-0.0083,+0.0339]  overlapping
+    TTM              vs Autoformer       d=+0.0180  CI=[-0.0086,+0.0444]  overlapping
+    Autoformer       vs FEDformer        d=+0.0010  CI=[-0.0287,+0.0301]  overlapping
+    FEDformer        vs TSB              d=+0.0969  CI=[+0.0617,+0.1319]  separated
+    TSB              vs DLinear          d=+0.0307  CI=[-0.0069,+0.0690]  overlapping
+    DLinear          vs SBA              d=+0.1836  CI=[+0.1477,+0.2200]  separated
+    SBA              vs Croston          d=+0.0579  CI=[+0.0395,+0.0794]  separated
+    Croston          vs WaveNet-like     d=+0.0311  CI=[-0.0028,+0.0652]  overlapping
+    WaveNet-like     vs LSTM             d=+0.0229  CI=[+0.0073,+0.0389]  separated
+    LSTM             vs TCN              d=+0.0268  CI=[+0.0110,+0.0426]  separated
+  leading group (CI overlaps DeepAR-negbin):
+    TimesFM          d=+0.0042 CI=[-0.0127,+0.0219] in
+    PatchMixer       d=+0.0083 CI=[-0.0076,+0.0252] in
+    Chronos          d=+0.0144 CI=[-0.0042,+0.0337] in
+    DeepAR           d=+0.0240 CI=[+0.0083,+0.0402] out
+    HurdleDLinear    d=+0.0421 CI=[+0.0248,+0.0596] out
+    PatchTCN         d=+0.0431 CI=[+0.0257,+0.0618] out
+    TweedieGP        d=+0.0458 CI=[+0.0256,+0.0669] out
+    Moirai           d=+0.0811 CI=[+0.0592,+0.1035] out
+    PatchTST         d=+0.0908 CI=[+0.0693,+0.1128] out
+    MOMENT           d=+0.0922 CI=[+0.0676,+0.1183] out
+    PatchTSMixer     d=+0.1256 CI=[+0.0991,+0.1522] out
+    TTM              d=+0.1386 CI=[+0.1161,+0.1619] out
+    Autoformer       d=+0.1566 CI=[+0.1327,+0.1796] out
+    FEDformer        d=+0.1576 CI=[+0.1335,+0.1809] out
+    TSB              d=+0.2545 CI=[+0.2189,+0.2896] out
+    DLinear          d=+0.2852 CI=[+0.2595,+0.3112] out
+    SBA              d=+0.4688 CI=[+0.4311,+0.5077] out
+    Croston          d=+0.5268 CI=[+0.4910,+0.5648] out
+    WaveNet-like     d=+0.5578 CI=[+0.5235,+0.5937] out
+    LSTM             d=+0.5807 CI=[+0.5440,+0.6176] out
+    TCN              d=+0.6076 CI=[+0.5730,+0.6414] out
+  => leading group: ['DeepAR-negbin', 'TimesFM', 'PatchMixer', 'Chronos']
+
+================================================================================================
+fresh_retail: 22 models
+================================================================================================
+  common series: 50000
+  ranking: DeepAR-negbin(0.6083) < PatchMixer(0.6082) < TweedieGP(0.6066) < TimesFM(0.6052) < TSB(0.5957) < SBA(0.5942) < PatchTST(0.5916) < PatchTSMixer(0.5903) < DeepAR(0.5898) < Chronos(0.5896) < Moirai(0.5848) < Croston(0.5844) < TTM(0.5833) < PatchTCN(0.5783) < WaveNet-like(0.5474) < TCN(0.5453) < LSTM(0.5393) < FEDformer(0.5365) < Autoformer(0.5337) < DLinear(0.5066) < HurdleDLinear(0.4935) < MOMENT(0.0859)
+  pairs: 231   CI excludes 0: 215
+  adjacent pairs:
+    DeepAR-negbin    vs PatchMixer       d=+0.0001  CI=[-0.0018,+0.0020]  overlapping
+    PatchMixer       vs TweedieGP        d=+0.0016  CI=[-0.0008,+0.0039]  overlapping
+    TweedieGP        vs TimesFM          d=+0.0014  CI=[-0.0011,+0.0040]  overlapping
+    TimesFM          vs TSB              d=+0.0095  CI=[+0.0076,+0.0115]  separated
+    TSB              vs SBA              d=+0.0014  CI=[-0.0009,+0.0039]  overlapping
+    SBA              vs PatchTST         d=+0.0026  CI=[+0.0003,+0.0050]  separated
+    PatchTST         vs PatchTSMixer     d=+0.0013  CI=[-0.0004,+0.0030]  overlapping
+    PatchTSMixer     vs DeepAR           d=+0.0004  CI=[-0.0018,+0.0027]  overlapping
+    DeepAR           vs Chronos          d=+0.0002  CI=[-0.0025,+0.0031]  overlapping
+    Chronos          vs Moirai           d=+0.0048  CI=[+0.0021,+0.0075]  separated
+    Moirai           vs Croston          d=+0.0004  CI=[-0.0025,+0.0033]  overlapping
+    Croston          vs TTM              d=+0.0012  CI=[-0.0012,+0.0034]  overlapping
+    TTM              vs PatchTCN         d=+0.0050  CI=[+0.0032,+0.0069]  separated
+    PatchTCN         vs WaveNet-like     d=+0.0308  CI=[+0.0275,+0.0341]  separated
+    WaveNet-like     vs TCN              d=+0.0021  CI=[+0.0013,+0.0030]  separated
+    TCN              vs LSTM             d=+0.0060  CI=[+0.0044,+0.0076]  separated
+    LSTM             vs FEDformer        d=+0.0028  CI=[-0.0008,+0.0064]  overlapping
+    FEDformer        vs Autoformer       d=+0.0028  CI=[-0.0002,+0.0057]  overlapping
+    Autoformer       vs DLinear          d=+0.0272  CI=[+0.0241,+0.0304]  separated
+    DLinear          vs HurdleDLinear    d=+0.0131  CI=[+0.0109,+0.0154]  separated
+    HurdleDLinear    vs MOMENT           d=+0.4076  CI=[+0.4026,+0.4126]  separated
+  leading group (CI overlaps DeepAR-negbin):
+    PatchMixer       d=+0.0001 CI=[-0.0018,+0.0020] in
+    TweedieGP        d=+0.0017 CI=[-0.0001,+0.0036] in
+    TimesFM          d=+0.0032 CI=[+0.0008,+0.0055] out
+    TSB              d=+0.0126 CI=[+0.0102,+0.0151] out
+    SBA              d=+0.0141 CI=[+0.0117,+0.0165] out
+    PatchTST         d=+0.0167 CI=[+0.0144,+0.0190] out
+    PatchTSMixer     d=+0.0180 CI=[+0.0155,+0.0206] out
+    DeepAR           d=+0.0185 CI=[+0.0164,+0.0206] out
+    Chronos          d=+0.0187 CI=[+0.0162,+0.0213] out
+    Moirai           d=+0.0235 CI=[+0.0212,+0.0260] out
+    Croston          d=+0.0239 CI=[+0.0213,+0.0266] out
+    TTM              d=+0.0250 CI=[+0.0227,+0.0274] out
+    PatchTCN         d=+0.0301 CI=[+0.0276,+0.0324] out
+    WaveNet-like     d=+0.0609 CI=[+0.0578,+0.0640] out
+    TCN              d=+0.0630 CI=[+0.0598,+0.0661] out
+    LSTM             d=+0.0691 CI=[+0.0657,+0.0724] out
+    FEDformer        d=+0.0718 CI=[+0.0692,+0.0744] out
+    Autoformer       d=+0.0746 CI=[+0.0719,+0.0773] out
+    DLinear          d=+0.1018 CI=[+0.0990,+0.1046] out
+    HurdleDLinear    d=+0.1149 CI=[+0.1126,+0.1172] out
+    MOMENT           d=+0.5224 CI=[+0.5174,+0.5275] out
+  => leading group: ['DeepAR-negbin', 'PatchMixer', 'TweedieGP']
+
+================================================================================================
+m5: 23 models
+================================================================================================
+  common series: 30490
+  ranking: DeepAR(0.7744) < TweedieGP(0.7728) < TimesFM(0.7683) < DeepAR-negbin(0.7658) < Chronos(0.7552) < PatchMixer(0.7421) < HurdleDLinear(0.7326) < PatchTSMixer(0.7242) < TTM(0.7232) < PatchTCN(0.7230) < PatchTST(0.7219) < DLinear(0.7165) < LSTM(0.7149) < TCN(0.7139) < TSB(0.7127) < WaveNet-like(0.7111) < SBA(0.6941) < Moirai(0.6937) < Croston(0.6852) < Autoformer(0.6707) < FEDformer(0.6678) < MOMENT(0.3899) < Timer(0.3409)
+  pairs: 253   CI excludes 0: 247
+  adjacent pairs:
+    DeepAR           vs TweedieGP        d=+0.0016  CI=[+0.0006,+0.0027]  separated
+    TweedieGP        vs TimesFM          d=+0.0045  CI=[+0.0032,+0.0059]  separated
+    TimesFM          vs DeepAR-negbin    d=+0.0024  CI=[+0.0015,+0.0033]  separated
+    DeepAR-negbin    vs Chronos          d=+0.0107  CI=[+0.0093,+0.0120]  separated
+    Chronos          vs PatchMixer       d=+0.0131  CI=[+0.0115,+0.0148]  separated
+    PatchMixer       vs HurdleDLinear    d=+0.0095  CI=[+0.0076,+0.0114]  separated
+    HurdleDLinear    vs PatchTSMixer     d=+0.0084  CI=[+0.0062,+0.0106]  separated
+    PatchTSMixer     vs TTM              d=+0.0010  CI=[+0.0004,+0.0015]  separated
+    TTM              vs PatchTCN         d=+0.0002  CI=[-0.0006,+0.0010]  overlapping
+    PatchTCN         vs PatchTST         d=+0.0011  CI=[+0.0004,+0.0017]  separated
+    PatchTST         vs DLinear          d=+0.0055  CI=[+0.0043,+0.0066]  separated
+    DLinear          vs LSTM             d=+0.0016  CI=[-0.0000,+0.0032]  overlapping
+    LSTM             vs TCN              d=+0.0010  CI=[-0.0001,+0.0022]  overlapping
+    TCN              vs TSB              d=+0.0012  CI=[-0.0007,+0.0032]  overlapping
+    TSB              vs WaveNet-like     d=+0.0015  CI=[-0.0004,+0.0035]  overlapping
+    WaveNet-like     vs SBA              d=+0.0171  CI=[+0.0144,+0.0197]  separated
+    SBA              vs Moirai           d=+0.0004  CI=[-0.0027,+0.0034]  overlapping
+    Moirai           vs Croston          d=+0.0085  CI=[+0.0053,+0.0117]  separated
+    Croston          vs Autoformer       d=+0.0145  CI=[+0.0122,+0.0168]  separated
+    Autoformer       vs FEDformer        d=+0.0029  CI=[+0.0015,+0.0042]  separated
+    FEDformer        vs MOMENT           d=+0.2779  CI=[+0.2721,+0.2838]  separated
+    MOMENT           vs Timer            d=+0.0490  CI=[+0.0435,+0.0543]  separated
+  leading group (CI overlaps DeepAR):
+    TweedieGP        d=+0.0016 CI=[+0.0006,+0.0027] out
+    TimesFM          d=+0.0061 CI=[+0.0050,+0.0073] out
+    DeepAR-negbin    d=+0.0086 CI=[+0.0075,+0.0096] out
+    Chronos          d=+0.0192 CI=[+0.0177,+0.0207] out
+    PatchMixer       d=+0.0324 CI=[+0.0306,+0.0340] out
+    HurdleDLinear    d=+0.0418 CI=[+0.0402,+0.0435] out
+    PatchTSMixer     d=+0.0502 CI=[+0.0481,+0.0524] out
+    TTM              d=+0.0512 CI=[+0.0490,+0.0535] out
+    PatchTCN         d=+0.0514 CI=[+0.0492,+0.0537] out
+    PatchTST         d=+0.0525 CI=[+0.0503,+0.0547] out
+    DLinear          d=+0.0579 CI=[+0.0557,+0.0603] out
+    LSTM             d=+0.0595 CI=[+0.0572,+0.0619] out
+    TCN              d=+0.0605 CI=[+0.0582,+0.0629] out
+    TSB              d=+0.0617 CI=[+0.0592,+0.0643] out
+    WaveNet-like     d=+0.0633 CI=[+0.0609,+0.0658] out
+    SBA              d=+0.0803 CI=[+0.0774,+0.0834] out
+    Moirai           d=+0.0807 CI=[+0.0787,+0.0827] out
+    Croston          d=+0.0892 CI=[+0.0861,+0.0924] out
+    Autoformer       d=+0.1037 CI=[+0.1014,+0.1061] out
+    FEDformer        d=+0.1066 CI=[+0.1043,+0.1088] out
+    MOMENT           d=+0.3845 CI=[+0.3787,+0.3902] out
+    Timer            d=+0.4335 CI=[+0.4272,+0.4395] out
+  => leading group: ['DeepAR']
