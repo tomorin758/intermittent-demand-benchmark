@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use these artefacts, please cite the accompanying paper."
+title: "Intermittent-Demand Forecast Rankings Depend on the Metric — artefacts"
+authors:
+  - name: "Anonymous Author(s)"
+    affiliation: "Anonymous Institution (withheld for double-blind review)"
+year: 2026
+license: MIT
+type: dataset
