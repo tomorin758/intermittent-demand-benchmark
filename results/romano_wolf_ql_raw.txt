@@ -7,7 +7,7 @@ parts: 22 models, 857 series, 231 pairs
   Romano-Wolf stepdown (FWER 5%):                200 / 231
   vs the leader (DeepAR-negbin): naive separates 19 / 21; stepdown separates 19 / 21
   stepdown-controlled leading group: ['DeepAR-negbin', 'TimesFM', 'Chronos']
-  pairs rejected only by stepdown (largest t first):
+  pairs separated by the per-pair CI but not by stepdown (largest t first):
     MOMENT           vs TSB              d=-0.0184 CI=[-0.0306,-0.0063] t= 2.93
     TweedieGP        vs Moirai           d=-0.0168 CI=[-0.0284,-0.0049] t= 2.82
     TimesFM          vs TweedieGP        d=-0.0146 CI=[-0.0250,-0.0047] t= 2.79
@@ -24,13 +24,13 @@ fresh_retail: 22 models, 50000 series, 231 pairs
   Romano-Wolf stepdown (FWER 5%):                229 / 231
   vs the leader (TimesFM): naive separates 21 / 21; stepdown separates 21 / 21
   stepdown-controlled leading group: ['TimesFM']
-  pairs rejected only by stepdown (largest t first):
+  pairs separated by the per-pair CI but not by stepdown (largest t first):
 
 m5: 23 models, 30490 series, 253 pairs
   CI excludes 0 (naive, as quoted in the paper): 244 / 253
   Romano-Wolf stepdown (FWER 5%):                242 / 253
   vs the leader (TimesFM): naive separates 22 / 22; stepdown separates 22 / 22
   stepdown-controlled leading group: ['TimesFM']
-  pairs rejected only by stepdown (largest t first):
+  pairs separated by the per-pair CI but not by stepdown (largest t first):
     Chronos          vs TTM              d=-0.0035 CI=[-0.0063,-0.0007] t= 2.48
     TweedieGP        vs Chronos          d=-0.0038 CI=[-0.0073,-0.0003] t= 2.18

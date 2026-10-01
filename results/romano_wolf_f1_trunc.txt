@@ -7,7 +7,7 @@ parts: 22 models, 857 series, 231 pairs
   Romano-Wolf stepdown (FWER 5%):                197 / 231
   vs the leader (DeepAR-negbin): naive separates 18 / 21; stepdown separates 18 / 21
   stepdown-controlled leading group: ['DeepAR-negbin', 'TimesFM', 'PatchMixer', 'Chronos']
-  pairs rejected only by stepdown (largest t first):
+  pairs separated by the per-pair CI but not by stepdown (largest t first):
     HurdleDLinear    vs Moirai           d=+0.0390 CI=[+0.0157,+0.0638] t= 3.11
     Chronos          vs PatchTCN         d=+0.0287 CI=[+0.0105,+0.0470] t= 3.05
     MOMENT           vs TTM              d=+0.0465 CI=[+0.0155,+0.0771] t= 2.93
@@ -27,7 +27,7 @@ fresh_retail: 22 models, 50000 series, 231 pairs
   Romano-Wolf stepdown (FWER 5%):                213 / 231
   vs the leader (DeepAR-negbin): naive separates 19 / 21; stepdown separates 19 / 21
   stepdown-controlled leading group: ['DeepAR-negbin', 'PatchMixer', 'TweedieGP']
-  pairs rejected only by stepdown (largest t first):
+  pairs separated by the per-pair CI but not by stepdown (largest t first):
     DeepAR-negbin    vs TimesFM          d=+0.0032 CI=[+0.0008,+0.0055] t= 2.61
     SBA              vs PatchTST         d=+0.0026 CI=[+0.0003,+0.0050] t= 2.20
 
@@ -36,6 +36,6 @@ m5: 23 models, 30490 series, 253 pairs
   Romano-Wolf stepdown (FWER 5%):                245 / 253
   vs the leader (DeepAR): naive separates 22 / 22; stepdown separates 22 / 22
   stepdown-controlled leading group: ['DeepAR']
-  pairs rejected only by stepdown (largest t first):
+  pairs separated by the per-pair CI but not by stepdown (largest t first):
     PatchTSMixer     vs PatchTCN         d=+0.0012 CI=[+0.0003,+0.0021] t= 2.60
     LSTM             vs TSB              d=+0.0022 CI=[+0.0002,+0.0043] t= 2.13

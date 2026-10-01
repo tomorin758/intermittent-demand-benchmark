@@ -90,6 +90,7 @@ for ds in DS:
         hist = os.environ['M5_HISTORY']
     if os.path.exists(hist):
         available.append(ds)
+kept = []          # empty when OUT does not exist yet, i.e. on a first run
 if os.path.exists(OUT):
     with open(OUT) as fh:
         kept = [r for r in csv.reader(fh) if r and r[0] not in available and r[0] != 'dataset']

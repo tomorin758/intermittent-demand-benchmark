@@ -163,7 +163,7 @@ for metric in METRICS:
         p(f'  vs the leader ({best}): naive separates {len(naive_lead)} / {len(order) - 1}; '
           f'stepdown separates {len(sep)} / {len(order) - 1}')
         p(f'  stepdown-controlled leading group: {kept}')
-        p('  pairs rejected only by stepdown (largest t first):')
+        p('  pairs separated by the per-pair CI but not by stepdown (largest t first):')
         for i in np.argsort(-t):
             if naive[i] and not rej[i]:
                 a, b = pairs[i]
