@@ -2,6 +2,15 @@ import numpy as np, os, json, sys, csv
 ROOT=__import__('os').environ.get('PRED_DIR','data/final')   # prediction arrays are NOT shipped; see results/cscan.csv
 DS=[a for a in sys.argv[1:] if a] or ['parts','fresh_retail','m5']
 CS=[0.1,0.25,0.5,0.75,1.0,1.5,2.0]
+_missing=[d for d in DS if not os.path.isdir(os.path.join(ROOT,d))]
+if _missing:
+    raise SystemExit(
+        'missing prediction arrays in %s: %s\n'
+        'This bundle ships the evaluation outputs, not the per-model prediction arrays, so the '
+        'threshold sweep cannot be re-run from the bundle alone; its output ships pre-computed as '
+        'results/cscan.csv (see the README, "Scope of this bundle"). Point PRED_DIR at a directory '
+        'of <dataset>/<model>/{pred,true}.npy to re-run the sweep.'
+        % (ROOT, ', '.join(_missing)))
 def metrics(p,t,c):
     pt=np.where(p<c,0.0,p); tt=np.where(t<c,0.0,t)
     ql=0.5*float(np.mean(np.abs(pt-tt)))

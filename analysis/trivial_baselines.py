@@ -90,11 +90,20 @@ for ds in DS:
         hist = os.environ['M5_HISTORY']
     if os.path.exists(hist):
         available.append(ds)
-kept = []          # empty when OUT does not exist yet, i.e. on a first run
+kept = []              # empty when OUT does not exist yet, i.e. on a first run
+published_order = []   # dataset order of the published file, so a re-run does not reorder it
 if os.path.exists(OUT):
     with open(OUT) as fh:
-        kept = [r for r in csv.reader(fh) if r and r[0] not in available and r[0] != 'dataset']
-rows = [HEADER] + kept
+        for r in csv.reader(fh):
+            if not r or r[0] == 'dataset':
+                continue
+            if r[0] not in published_order:
+                published_order.append(r[0])
+            if r[0] not in available:
+                kept.append(r)
+rows_by_ds = {ds: [] for ds in published_order}
+for r in kept:
+    rows_by_ds[r[0]].append(r)
 print('recomputing: %s; keeping published rows for: %s'
       % (', '.join(available), ', '.join(sorted({r[0] for r in kept})) or 'none'), flush=True)
 
@@ -125,9 +134,16 @@ for ds in DS:
         rf = rank_among_subjects(f1, subj, '0F1(c=0.5)', True)
         print('  %-15s QL=%.3f (rank %d/%d)  F1=%.3f (rank %d/%d)'
               % (name, ql, rq, len(subj) + 1, f1, rf, len(subj) + 1))
-        rows.append([ds, name, '%.6f' % ql, '%.6f' % ql_t, '%.6f' % prec, '%.6f' % rec,
-                     '%.6f' % f1, len(subj), rq, rf])
+        if ds not in published_order:
+            published_order.append(ds)
+        rows_by_ds.setdefault(ds, []).append(
+            [ds, name, '%.6f' % ql, '%.6f' % ql_t, '%.6f' % prec, '%.6f' % rec,
+             '%.6f' % f1, len(subj), rq, rf])
 
+rows = [HEADER] + [r for ds in published_order for r in rows_by_ds.get(ds, [])]
+for ds, rs in rows_by_ds.items():          # datasets absent from the published file
+    if ds not in published_order:
+        rows += rs
 with open(OUT, 'w', newline='') as fh:
     csv.writer(fh).writerows(rows)
 print('[saved] %s (%d rows)' % (os.path.relpath(OUT, BUNDLE), len(rows) - 1))

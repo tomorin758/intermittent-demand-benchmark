@@ -326,7 +326,7 @@ def quantile_loss(pred, true, rho=0.5):
     results['QL(0.5)'] = 0.5 * mae
 ```
 
-So QL(0.5) ≡ 0.5 × MAE in every implementation, as `PatchTST/CLAUDE.md:154` also states
+So QL(0.5) ≡ 0.5 × MAE in every implementation, as the PatchTST project notes also state
 (`QL(0.5) = 0.5 × MAE`). The paper's `main.tex:7` question is therefore answered: **yes**,
 QL(0.5) is exactly 0.5·MAE.
 
@@ -586,7 +586,7 @@ def load_hist(csv_path):
 ```
 
 which matches the `train_ratio=0.7` split used by `data_provider/data_loader.py`
-(`PatchTST/CLAUDE.md:172`: *“custom datasets use `train_ratio=0.7` via `Dataset_Custom`”*).
+(the PatchTST project notes: *“custom datasets use `train_ratio=0.7` via `Dataset_Custom`”*).
 
 **Important detail:** when `metric_comprehensive(..., c=0.5)` is called, the ADI–CV² labels for
 the **truncated** (`T_*`) block are computed on a history that has itself been truncated at `c`
@@ -685,7 +685,7 @@ data/evidence/<dataset>/<model>/<artifact files>
 * `granite-tsfm/results/*/checkpoints/**` (`config.json`, `trainer_state.json`, `.pt`, `.pth`,
   `.bin`, `.safetensors`) and `PatchTST/*_checkpoints/**` are checkpoints — excluded, though
   `trainer_state.json` does contain per-step training loss if that is ever needed.
-* Markdown files (`analysis/*.md`, the internal metric-definition notes, `CLAUDE.md`, `AGENTS.md`, `README.md`,
+* Markdown files (`analysis/*.md`, the internal metric-definition notes, `README.md`,
   `SUMMARY.md`) are documentation, not artifacts; they are not listed in the manifest but are
   cited throughout §3 as metadata sources.
 * `PatchTST/time_moe_extract.txt` is a dump of the TIME-MoE paper — excluded.
