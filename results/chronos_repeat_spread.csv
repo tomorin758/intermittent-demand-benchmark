@@ -1,0 +1,12 @@
+dataset,model,repeat,ql_raw,f1_trunc,note
+parts,Chronos,1,0.305379,0.742653,"repeat inference, identical command"
+parts,Chronos,2,0.301631,0.749793,"repeat inference, identical command"
+parts,Chronos,3,0.299919,0.753591,"repeat inference, identical command"
+parts,Chronos,4,0.296705,0.754563,"repeat inference, identical command"
+parts,Chronos,5,0.299550,0.753927,"repeat inference, identical command"
+parts,Chronos,6,0.302525,0.748258,"repeat inference, identical command"
+parts,Chronos,7,0.302408,0.756205,"repeat inference, identical command"
+parts,Chronos,8,0.294856,0.754376,"repeat inference, identical command"
+parts,Chronos,9,0.307168,0.744586,"repeat inference, identical command"
+parts,Chronos,10,0.302349,0.747715,"repeat inference, identical command"
+parts,Chronos,archived,0.304618,0.742904,the draw used in the paper (pred.npy as shipped in the metrics)

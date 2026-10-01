@@ -9,7 +9,9 @@ All three datasets are **third-party public data**; this bundle contains only de
 | `metrics/**`, `tables/**` | derived metrics and tables for all three datasets | this work | CC-BY-4.0 (fresh retail, M5-derived) / GPL-2+ (car-parts-derived) |
 | M5 raw data | **not redistributed** | M5 competition (Makridakis et al., 2022) | M5 competition terms; only derived per-series metrics are shipped |
 
-Code (`code/`, `analysis/`) is MIT-licensed (see `LICENSE`).
+All code in this bundle is licensed under the **Apache License 2.0** (see `LICENSE`). One file,
+`code/metrics_implementation.py`, is reproduced from the PatchTST repository (Apache-2.0) and was
+modified here; its origin and changes are recorded in `THIRD_PARTY_NOTICES.md`.
 
 Rebuilding the two dataset tables from source requires `datasets.load_dataset("Dingdong-Inc/FreshRetailNet-50K")`
 for fresh retail and `library(expsmooth); carparts` in R for the car-parts series.

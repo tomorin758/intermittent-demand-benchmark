@@ -3,9 +3,8 @@
 """Generate LaTeX result tables for the Bench 2026 / TBench evaluation draft.
 
 Reads the three result CSVs in data/ and writes:
-  tables/results_<name>.tex          -- core metric table per dataset (single-column friendly,
-                                        6 metric columns, spans text width via table*)
-  tables/results_extended_<name>.tex -- appendix table: tail + ADI-CV2 regime RMSE per dataset
+  tables/results_<name>.tex -- one full-width table per dataset carrying every metric the paper
+                               prints: six core columns plus the tail and demand-class RMSE
 
 Usage: python3 gen_tables.py
 """
@@ -26,19 +25,24 @@ OUT_DIR = "tables"
 # Core columns (main tables): (csv header token, latex header)
 CORE_COLS = [
     ("QL(0.5)",   "QL(0.5)"),
-    ("Precision", "0Precision"),
-    ("Recall",    "0Recall"),
+    ("Precision", "0P"),
+    ("Recall",    "0R"),
     ("F1 score",  "0F1"),
     ("MAE",       "MAE$_{>0}$"),
     ("RMSE",      "RMSE$_{>0}$"),
 ]
-# Extended columns (appendix tables): tail + regime RMSE
+# Printed disaggregated columns: the near-zero segment, the tail, and the four ADI--CV^2 classes.
+# The other four segments are not printed: (q10, q25] is empty on all three datasets and
+# (q25, q50] on Parts and Fresh retail (integer demand makes those percentiles coincide,
+# Section~\ref{sec:reorder}), and the remaining ones enter that section's redundancy analysis.
+# All 16 metrics are in the released per-model files.
 EXT_COLS = [
-    ("(q90, \u221e) RMSE", "Tail $>q_{90}$"),
-    ("intermittent RMSE",  "Interm."),
-    ("lumpy RMSE",         "Lumpy"),
-    ("smooth RMSE",        "Smooth"),
-    ("erratic RMSE",       "Erratic"),
+    ("[0, q10] RMSE",       "$[0,q_{10}]$"),
+    ("(q90, \u221e) RMSE",  "$>q_{90}$"),
+    ("intermittent RMSE",   "Int."),
+    ("lumpy RMSE",          "Lum."),
+    ("smooth RMSE",         "Sm."),
+    ("erratic RMSE",        "Err."),
 ]
 ZERO_LIKE = ("Precision", "Recall", "F1 score")
 
@@ -108,7 +112,7 @@ def latex_model(model):
         return model[: -len("(\u03c4=0.5)")] + "$^{\\dagger}$"
     return model.replace("\u03c4", "$\\tau$")
 
-def emit(name, display, data, cols, fname, floatenv, caption):
+def emit(name, display, data, cols, fname, floatenv, caption, label=None, width="\\linewidth"):
     rows = [r for r in data if r[0] == name]
     if not rows:
         return
@@ -127,10 +131,22 @@ def emit(name, display, data, cols, fname, floatenv, caption):
     L.append("\\begin{%s}[!htbp]" % floatenv)
     L.append("\\centering")
     L.append("\\caption{%s}" % caption)
-    L.append("\\label{%s}" % (("tab:ext:%s" if "extended" in fname else "tab:res:%s") % name))
-    L.append("\\resizebox{\\linewidth}{!}{%%")
+    L.append("\\label{%s}" % (label or (("tab:ext:%s" if "extended" in fname else "tab:res:%s") % name)))
+    L.append("\\renewcommand{\\arraystretch}{0.95}")
+    L.append("\\resizebox{%s}{!}{%%" % width)
     L.append("\\begin{tabular}{l%s}" % ("r" * len(cols)))
     L.append("\\toprule")
+    # Grouped header so that every abbreviated column says which metric it carries: the six core
+    # columns, then RMSE within quantile segments, then RMSE per ADI--CV^2 class.
+    n_core, n_seg, n_cls = 6, 2, 4
+    assert n_core + n_seg + n_cls == len(cols), (n_core, n_seg, n_cls, len(cols))
+    grp = (["\\multicolumn{1}{l}{}"] + ["\\multicolumn{%d}{c}{Core metrics}" % n_core]
+           + ["\\multicolumn{%d}{c}{RMSE by segment}" % n_seg]
+           + ["\\multicolumn{%d}{c}{RMSE by class}" % n_cls])
+    L.append(" & ".join(grp) + " \\\\")
+    L.append("\\cmidrule(lr){2-%d}\\cmidrule(lr){%d-%d}\\cmidrule(lr){%d-%d}"
+             % (1 + n_core, 2 + n_core, 1 + n_core + n_seg,
+                2 + n_core + n_seg, 1 + n_core + n_seg + n_cls))
     L.append("Model & " + " & ".join(h for _, h in cols) + " \\\\")
     L.append("\\midrule")
     for _, model, row in rows:
@@ -158,26 +174,19 @@ def main():
         path = next((c for c in cand if os.path.exists(c)), cand[0])
         d = read_csv(path)
         all_data += d
-        # core table: fits easily inside text width (single- or double-column)
-        caption = ("Results on the %s dataset: every model appears twice, once scored on its own "
-                   "point forecast (upper row) and once with the same forecast re-scored after "
-                   "truncating both sides at $c=0.5$ ($\\dagger$). QL(0.5) is the pinball loss at the "
-                   "median over all test points; MAE$_{>0}$ and RMSE$_{>0}$ use only points with a "
-                   "non-zero actual, so they are not twice QL(0.5). Zero-detection metrics "
-                   "(0Precision/0Recall/0F1) exist only in the truncated row: there both forecast and "
-                   "actual are classified as ``no demand'' when they fall below $c$. The untruncated "
-                   "rows are the ranking reference. Bold marks the best value among untruncated rows "
-                   "for the point-forecast columns and among truncated rows for the zero-detection "
-                   "columns. Tail and demand-regime errors are in Table~\\ref{tab:ext:%s}."
-                   % (display, key))
-        emit(key, display, d, CORE_COLS, "results_%s.tex" % key, "table", caption)
-        # extended appendix table
-        caption2 = ("Extended metrics on the %s dataset for the same rows as the core table: tail "
-                    "RMSE on the largest non-zero demands (actuals above their $q_{90}$) and RMSE per "
-                    "ADI--CV$^2$ demand class (Interm. = intermittent). $\\dagger$: the truncated row "
-                    "(forecast and actuals below $c=0.5$ set to zero). Bold marks the best value among "
-                    "untruncated rows." % display)
-        emit(key, display, d, EXT_COLS, "results_extended_%s.tex" % key, "table", caption2)
+        # One full-width table per dataset carrying every metric the paper prints: the six core
+        # columns plus the tail and demand-class columns that used to sit in the appendix. A single
+        # column cannot hold eleven numeric columns for 45 rows, so the float spans both columns.
+        caption = ("Results on the %s dataset: six core metrics, two quantile-segment RMSEs and "
+                   "RMSE per ADI--CV$^2$ class. $\\dagger$ marks the same point forecast re-scored "
+                   "after truncation at $c=0.5$, the only row carrying zero-detection metrics; bold "
+                   "marks the best row of each kind. 0P, 0R and 0F1 are zero-detection precision, "
+                   "recall and F1; Int., Lum., Sm. and Err. are the ADI--CV$^2$ classes. Unprinted "
+                   "segments are empty by construction or enter Section~\\ref{sec:reorder}; all 16 "
+                   "metrics ship in the released files."
+                   % display)
+        emit(key, display, d, CORE_COLS + EXT_COLS, "results_%s.tex" % key, "table*", caption,
+             label="tab:res:%s" % key, width="\\textwidth")
     print("[done] regenerate tables by re-running: python3 gen_tables.py")
 
 if __name__ == "__main__":

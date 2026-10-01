@@ -105,7 +105,9 @@ fig,axes=plt.subplots(1,2,figsize=(7.4,2.9))
 # ---- panel (a): Spearman rho vs non-zero MAE ----
 ax=axes[0]
 hatches=['','///','...','xxx']
-grays=['0.15','0.45','0.7','0.9']
+# Okabe-Ito palette, same mapping as fig_profiles (Parts blue, Fresh vermillion, M5 green);
+# the hatches below keep the three bars apart in black-and-white printing
+colors=['#0072B2','#D55E00','#009E73']
 w=0.2; xs=range(len(AXES))
 for k,ds in enumerate(['Parts','Fresh','M5']):
     D=DATA[ds]; ms=list(D)
@@ -114,26 +116,34 @@ for k,ds in enumerate(['Parts','Fresh','M5']):
     for a in AXES:
         r_a=avgrank([D[m][a] for m in ms]); rhos.append(pear(r_mae,r_a))
     pos=[x+(k-1)*w for x in xs]
-    ax.bar(pos,rhos,width=w,color=grays[k],edgecolor='black',linewidth=0.6,
+    ax.bar(pos,rhos,width=w,color=colors[k],edgecolor='black',linewidth=0.6,
            hatch=hatches[k],label=ds)
+ax.axhline(1.0,color='0.30',linewidth=0.7,linestyle=(0,(4,2)),zorder=1)
 ax.axhline(0,color='black',linewidth=0.8)
+ax.annotate('same order as MAE',xy=(0,1.0),xycoords=('axes fraction','data'),
+            xytext=(3,1),textcoords='offset points',fontsize=5.6,color='0.30',
+            ha='left',va='bottom',zorder=4)
+ax.annotate('unrelated',xy=(0,0.0),xycoords=('axes fraction','data'),
+            xytext=(3,-1),textcoords='offset points',fontsize=5.6,color='0.30',
+            ha='left',va='top',zorder=4)
 ax.set_xticks(list(xs)); ax.set_xticklabels([LABEL[a] for a in AXES],fontsize=7)
 ax.set_ylabel('Spearman $\\rho$ vs. non-zero MAE',fontsize=8)
-ax.set_title('(a) Rank agreement with MAE depends on axis and dataset',fontsize=8,loc='left')
+ax.text(0.5,-0.17,'(a)',transform=ax.transAxes,ha='center',va='top',fontsize=8)
 ax.tick_params(labelsize=6); ax.legend(fontsize=7,frameon=False,ncol=3,loc='lower left')
-ax.set_ylim(-0.45,1.12)
+ax.set_ylim(-0.25,1.18)
+ax.set_xlim(-0.45,3.55)
 ax.grid(axis='y',linewidth=0.3,alpha=0.5); ax.set_axisbelow(True)
 
 # ---- panel (b): rank slopegraph, Parts MAE -> lumpy ----
 ax=axes[1]
 D=DATA['Parts']; ms=list(D)
 r_mae=avgrank([D[m]['MAE'] for m in ms]); r_lu=avgrank([D[m]['lumpy RMSE'] for m in ms])
-HL={'TCN':'#1f4e9c','PatchMixer':'#b2182b'}
+HL={'TCN':'#0072B2','PatchMixer':'#D55E00'}
 STYLE={'TCN':'-','PatchMixer':(0,(4,2))}   # solid vs dashed so panel (b) survives greyscale printing
 for m in ms:
     hl = m in HL
     ax.plot([0,1],[r_mae[ms.index(m)],r_lu[ms.index(m)]],
-            color=HL.get(m,'0.78'), linewidth=1.8 if hl else 0.8,
+            color=HL.get(m,'#BFBFBF'), linewidth=1.8 if hl else 0.8,
             linestyle=STYLE.get(m,'-'),
             marker='o' if hl else None, markersize=4, zorder=3 if hl else 1)
     if hl:
@@ -141,13 +151,14 @@ for m in ms:
                     ha='right',va='center',fontsize=7,fontweight='bold',color=HL[m])
         ax.annotate(m,(1,r_lu[ms.index(m)]),xytext=(6,0),textcoords='offset points',
                     ha='left',va='center',fontsize=7,fontweight='bold',color=HL[m])
-ax.annotate('rank 1',(1,1),xytext=(6,0),textcoords='offset points',ha='left',va='center',fontsize=7)
+# 'rank 1' text removed: it collided with the PatchMixer label (PatchMixer is rank 1 by
+# lumpy RMSE) and the y-axis already states rank 1 = best.
 ax.invert_yaxis()
 ax.set_xlim(-0.35,1.35); ax.set_xticks([0,1])
 ax.set_xticklabels(['by non-zero\nMAE','by lumpy\nRMSE'],fontsize=7)
 ax.set_ylabel('rank (1 = best)',fontsize=8)
 ax.set_yticks([1,5,10,15,20]); ax.tick_params(labelsize=6)
-ax.set_title('(b) Parts: the same models cross over',fontsize=8,loc='left')
+ax.text(0.5,-0.17,'(b)',transform=ax.transAxes,ha='center',va='top',fontsize=8)
 for s in ['top','right']: ax.spines[s].set_visible(False)
 
 plt.tight_layout()
