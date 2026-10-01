@@ -61,13 +61,18 @@ def f1(tp, fp, fn):
 
 
 summary = {}
+skipped = []
 p(f'metric = {COL}   B = {B}   paired over series (identical resample for both models)')
 for ds in DS:
+    if not os.path.isdir(os.path.join(PERSERIES, ds)):
+        p(f'\n{ds}: skipped -- metrics/perseries/{ds} is not part of this copy '
+          f'(see SUPPLEMENTARY_NOTE.md); the full bundle is at the anonymised mirror')
+        skipped.append(ds); continue
     USE_COUNTS = METRIC == 'f1_trunc'
     tab = load(ds, counts=USE_COUNTS)
     p(); p('=' * 96); p(f'{ds}: {len(tab)} models'); p('=' * 96)
     if len(tab) < 2:
-        p('  (not enough models)'); continue
+        p('  (not enough models)'); skipped.append(ds); continue
     common = None
     for m in tab:
         common = set(tab[m]) if common is None else (common & set(tab[m]))
@@ -127,7 +132,9 @@ for ds in DS:
                    'pairs_separated': sig, 'pairs_total': len(pairs)}
     del boot
 
-with open(os.path.join(RESULTS, f'bootstrap_{METRIC}.txt'), 'w') as fh:
+# a partial run (some datasets absent) must not overwrite the complete shipped report
+tag = '_partial' if skipped else ''
+with open(os.path.join(RESULTS, f'bootstrap_{METRIC}{tag}.txt'), 'w') as fh:
     fh.write('\n'.join(out) + '\n')
-json.dump(summary, open(os.path.join(RESULTS, f'bootstrap_{METRIC}.json'), 'w'), indent=1)
-print(f'[saved] results/bootstrap_{METRIC}.txt', flush=True)
+json.dump(summary, open(os.path.join(RESULTS, f'bootstrap_{METRIC}{tag}.json'), 'w'), indent=1)
+print(f'[saved] results/bootstrap_{METRIC}{tag}.txt', flush=True)

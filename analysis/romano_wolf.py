@@ -140,10 +140,15 @@ for metric in METRICS:
       f'(same resampling as results/bootstrap_{metric}.txt)')
     p('=' * 100)
     summary = {}
+    skipped = []
     for ds in DS:
+        if not os.path.isdir(os.path.join(PERSERIES, ds)):
+            p(f'\n{ds}: skipped -- metrics/perseries/{ds} is not part of this copy '
+              f'(see SUPPLEMENTARY_NOTE.md); the full bundle is at the anonymised mirror')
+            skipped.append(ds); continue
         res = bootstrap_pairs(ds, metric)
         if res is None:
-            p(f'\n{ds}: not enough models'); continue
+            p(f'\n{ds}: not enough models'); skipped.append(ds); continue
         order, means, pairs, boot, mean, n = res
         lo = np.percentile(boot, 100 * ALPHA / 2, axis=0)
         hi = np.percentile(boot, 100 * (1 - ALPHA / 2), axis=0)
@@ -177,7 +182,9 @@ for metric in METRICS:
                        'leader_stepdown_separated': len(sep),
                        'stepdown_leading_group': kept}
         del boot
-    with open(os.path.join(RESULTS, f'romano_wolf_{metric}.txt'), 'w') as fh:
+    # a partial run (some datasets absent) must not overwrite the complete shipped report
+    tag = '_partial' if skipped else ''
+    with open(os.path.join(RESULTS, f'romano_wolf_{metric}{tag}.txt'), 'w') as fh:
         fh.write('\n'.join(out) + '\n')
-    json.dump(summary, open(os.path.join(RESULTS, f'romano_wolf_{metric}.json'), 'w'), indent=1)
-    print(f'[saved] results/romano_wolf_{metric}.txt', flush=True)
+    json.dump(summary, open(os.path.join(RESULTS, f'romano_wolf_{metric}{tag}.json'), 'w'), indent=1)
+    print(f'[saved] results/romano_wolf_{metric}{tag}.txt', flush=True)
