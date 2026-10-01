@@ -243,8 +243,8 @@ Two different machines/configurations were used:
 |---|---|
 | `PatchTST/wavenet_run.log:33` (and 134, 235, 336, 437, 538) | `You are using a CUDA device ('NVIDIA GeForce RTX 4090') that has Tensor Cores.` |
 | `PatchTST/PatchTST_supervised/analysis/output/run_rq2_*.log:11`, `run_zinb_*.log:12`, `run_moe_gating.log` | same RTX 4090 message |
-| `PatchTST/PatchTST_supervised/analysis/结论汇总_RQ1_RQ2.md:71` | `parts 训练 30–65s/epoch(4090);fresh head_only 60min/epoch、full 82min/epoch。` |
-| `PatchTST/PatchTST_supervised/analysis/结论汇总_RQ1_RQ2.md:282` | `本轮总 GPU 时间 < 2 天(4090)` |
+| `PatchTST/PatchTST_supervised/analysis/<RQ1-RQ2 summary>.md:71` | `parts: 30-65s/epoch (4090); fresh head_only 60min/epoch, full 82min/epoch` (translated) |
+| `PatchTST/PatchTST_supervised/analysis/<RQ1-RQ2 summary>.md:282` | `total GPU time for this round < 2 days (4090)` (translated) |
 | `granite-tsfm/results/m5_ttm_train.log:20` | `GPU: Tesla P40` |
 | `granite-tsfm/results/m5_patchtsmixer_sl112.log:11` | `GPU: Tesla P40` |
 | `granite-tsfm/results/timesfm_all.log:7,78,543` | `GPU: Tesla P40` |
@@ -263,9 +263,9 @@ dependencies, not per-run records).
 |---|---|
 | `granite-tsfm/results/m5_patchtsmixer_sl112.log` | `train_runtime': '808.4'` (per chunk, seconds; also 573.6, 837.5, 814.6, 819.7, …) |
 | `granite-tsfm/results/m5_ttm_train.log:28` | per-iteration progress only: `0%\| \| 1/1900 [00:03<1:51:13, 3.51s/it]` |
-| `PatchTST_supervised/analysis/output/run_rq2_g_occ01.log:27` | `[g_occ01] 训练 3 epochs 用时 234s (78s/epoch)` (same pattern in `run_rq2_*.log`, `run_zinb_*.log`) |
-| `PatchTST_supervised/analysis/output/fresh_controls_run.log:15` | `[head_ep3] 训练 3 epochs 用时 11038s (3679s/epoch)` |
-| `PatchTST_supervised/analysis/结论汇总_RQ1_RQ2.md:71,282` | `parts 训练 30–65s/epoch(4090);fresh head_only 60min/epoch、full 82min/epoch` / `本轮总 GPU 时间 < 2 天(4090)` |
+| `PatchTST_supervised/analysis/output/run_rq2_g_occ01.log:27` | `[g_occ01] trained 3 epochs in 234s (78s/epoch)` (translated; same pattern in `run_rq2_*.log`, `run_zinb_*.log`) |
+| `PatchTST_supervised/analysis/output/fresh_controls_run.log:15` | `[head_ep3] trained 3 epochs in 11038s (3679s/epoch)` (translated) |
+| `PatchTST_supervised/analysis/<RQ1-RQ2 summary>.md:71,282` | `parts: 30-65s/epoch (4090); fresh head_only 60min/epoch, full 82min/epoch` / `total GPU time for this round < 2 days (4090)` (translated) |
 | `PatchMixer/result.txt:1` | `epoch_time_sum:0, epoch:20, epoch_time_avg:0.0` — **the field exists but was never populated (always 0)** |
 
 Per-run wall-clock is **absent** for: every `PatchTST_supervised/results/*` supervised run
@@ -290,7 +290,7 @@ produced the specific artifact**.
 
 ```python
 def _ql(pred, true, rho=0.5):
-    """内部：展平后的 QuantileLoss"""
+    """Internal: quantile loss over the flattened arrays."""
     p = np.asarray(pred, dtype=np.float64).ravel()
     t = np.asarray(true, dtype=np.float64).ravel()
     e = t - p
@@ -303,7 +303,7 @@ def _ql(pred, true, rho=0.5):
 def quantile_loss(pred, true, rho=0.5):
     """
     QL(rho) = 1/N * Σ ρ_rho(y - ŷ)
-    当 rho=0.5: QL(0.5) = 0.5 * MAE
+    With rho=0.5, QL(0.5) = 0.5 * MAE
     """
     ...
     loss = np.where(e >= 0, rho * e, (rho - 1) * e)
@@ -348,7 +348,7 @@ The all-point MAE/RMSE for the same parts/PatchTST run would be 0.733 / 1.073, s
 with $y_i>0$” does **not** describe the columns that are actually printed — the printed columns
 *are* the non-zero ones. (Two cells are explicitly flagged as legacy-source differences in
 `fill_parts_table.py:121`:
-`known_diff = {('PatchTST', 'NT', 6), ('Croston(τ=0.5)', 'T', 15)}  # 已知旧源差异（不覆盖的行）`
+`known_diff = {('PatchTST', 'NT', 6), ('Croston(τ=0.5)', 'T', 15)}  # known source differences (rows not overwritten)`
 — index 6 = the `[0, q10] RMSE` cell of raw `PatchTST`, index 15 = the Erratic-RMSE cell of
 `Croston(τ=0.5)`.)
 
@@ -360,7 +360,7 @@ Default `c = 0.5`, applied as “values **strictly below** c become 0”.
 
 ```python
 def _truncate(values, c):
-    """截断：< c 的值置为 0"""
+    """Truncation: values below c are set to zero."""
     v = np.asarray(values, dtype=np.float64).copy()
     v[v < c] = 0.0
     return v
@@ -403,10 +403,10 @@ Current definition — **strict inequality, positive class = “actual < c”**,
 def _zero_classification(pred, true, c=0.5):
     """
     0Precision / 0Recall / 0F1
-    正类 = "真实值 < c"（被视为零需求）
-    TP0: 真实 < c 且预测 < c
-    FP0: 真实 >= c 且预测 < c
-    FN0: 真实 < c 且预测 >= c
+    Positive class = "actual value < c" (treated as no demand)
+    TP0: actual < c and predicted < c
+    FP0: actual >= c and predicted < c
+    FN0: actual < c and predicted >= c
     """
     ...
     tp = np.sum((t < c) & (p < c))
@@ -469,9 +469,9 @@ _PERCENTILES = [10, 25, 50, 75, 90, 100]
 
 def _segment_rmse_by_percentile(pred, true, c=None):
     """
-    按真实非零值的分位数分段计算 RMSE。
-    c=None → 不截断 (非零: true>0)
-    c=float → 截断版 (非零: true>=c)
+    RMSE computed within segments defined by quantiles of the non-zero actual values.
+    c=None -> non-truncated (non-zero: true > 0)
+    c=float -> truncated version (non-zero: true >= c)
     """
     ...
     if c is None:
@@ -514,7 +514,7 @@ four implementations, and are always computed on the **training-history window o
 
 ```python
 def _adi_cv2(hist_series, c=None):
-    """单条历史序列 → (ADI, CV²)"""
+    """One history series -> (ADI, CV^2)."""
     h = np.asarray(hist_series, dtype=np.float64)
     if c is not None:
         h = h.copy()
@@ -685,7 +685,7 @@ data/evidence/<dataset>/<model>/<artifact files>
 * `granite-tsfm/results/*/checkpoints/**` (`config.json`, `trainer_state.json`, `.pt`, `.pth`,
   `.bin`, `.safetensors`) and `PatchTST/*_checkpoints/**` are checkpoints — excluded, though
   `trainer_state.json` does contain per-step training loss if that is ever needed.
-* Markdown files (`analysis/*.md`, `评价指标.md`, `CLAUDE.md`, `AGENTS.md`, `README.md`,
+* Markdown files (`analysis/*.md`, the internal metric-definition notes, `CLAUDE.md`, `AGENTS.md`, `README.md`,
   `SUMMARY.md`) are documentation, not artifacts; they are not listed in the manifest but are
   cited throughout §3 as metadata sources.
 * `PatchTST/time_moe_extract.txt` is a dump of the TIME-MoE paper — excluded.

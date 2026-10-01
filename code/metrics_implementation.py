@@ -3,7 +3,7 @@ from collections import OrderedDict
 
 
 # ============================================================================
-#  基础指标（保留向后兼容）
+#  Core metrics (kept for backward compatibility)
 # ============================================================================
 
 def RSE(pred, true):
@@ -23,8 +23,8 @@ def MAE(pred, true):
 
 def MAE_non_zero(pred, true, threshold=0.0):
     """
-    只在真实值非零的点上计算 MAE
-    默认 true > 0 视为非零
+    MAE computed only on points where the actual value is non-zero
+    By default, true > 0 counts as non-zero
     """
     pred = np.asarray(pred).reshape(-1)
     true = np.asarray(true).reshape(-1)
@@ -55,7 +55,7 @@ def MSPE(pred, true):
 def QuantileLoss(pred, true, rho=0.5):
     """
     QL_rho = mean( max(rho*(y-ŷ), (1-rho)*(ŷ-y)) )
-    当 rho=0.5 时，QL(0.5) = 0.5 * MAE
+    With rho=0.5, QL(0.5) = 0.5 * MAE
     """
     pred = np.asarray(pred)
     true = np.asarray(true)
@@ -64,9 +64,9 @@ def QuantileLoss(pred, true, rho=0.5):
 
 def zero_metrics(pred, true, threshold=0.5):
     """
-    针对 zero-value event:
-    true <= threshold 视为真实零值事件
-    pred <= threshold 视为预测零值事件
+    For the zero-value event:
+    true <= threshold counts as a true zero event
+    pred <= threshold counts as a predicted zero event
     """
     pred = np.asarray(pred).reshape(-1)
     true = np.asarray(true).reshape(-1)
@@ -87,7 +87,7 @@ def zero_metrics(pred, true, threshold=0.5):
 
 def segment_rmse(pred, true, zero_threshold=0.5):
     """
-    按真实值分段:
+    Segmented by the actual value:
     1) true <= zero_threshold
     2) zero_threshold < true < 2
     3) true >= 2
@@ -111,7 +111,7 @@ def segment_rmse(pred, true, zero_threshold=0.5):
 
 
 def metric(pred, true, zero_threshold=0.5, rho=0.5):
-    """旧版兼容函数"""
+    """Legacy compatibility function."""
     mae_non_zero = MAE_non_zero(pred, true, threshold=zero_threshold)
     mse = MSE(pred, true)
     rmse = RMSE(pred, true)
@@ -143,18 +143,18 @@ def metric(pred, true, zero_threshold=0.5, rho=0.5):
 
 
 # ============================================================================
-#  文档新增指标：截断 / 不截断 两组
+#  Metrics added for this benchmark: truncated and non-truncated groups
 # ============================================================================
 
 def _truncate(values, c):
-    """截断：< c 的值置为 0"""
+    """Truncation: values below c are set to zero."""
     v = np.asarray(values, dtype=np.float64).copy()
     v[v < c] = 0.0
     return v
 
 
 def _ql(pred, true, rho=0.5):
-    """内部：展平后的 QuantileLoss"""
+    """Internal: quantile loss over the flattened arrays."""
     p = np.asarray(pred, dtype=np.float64).ravel()
     t = np.asarray(true, dtype=np.float64).ravel()
     e = t - p
@@ -162,7 +162,7 @@ def _ql(pred, true, rho=0.5):
 
 
 def _mae_nz(pred, true):
-    """仅在真实值 > 0 处计算 MAE"""
+    """MAE computed only where the actual value is greater than zero."""
     p = np.asarray(pred, dtype=np.float64).ravel()
     t = np.asarray(true, dtype=np.float64).ravel()
     mask = t > 0
@@ -172,7 +172,7 @@ def _mae_nz(pred, true):
 
 
 def _rmse_nz(pred, true):
-    """仅在真实值 > 0 处计算 RMSE"""
+    """RMSE computed only where the actual value is greater than zero."""
     p = np.asarray(pred, dtype=np.float64).ravel()
     t = np.asarray(true, dtype=np.float64).ravel()
     mask = t > 0
@@ -184,10 +184,10 @@ def _rmse_nz(pred, true):
 def _zero_classification(pred, true, c=0.5):
     """
     0Precision / 0Recall / 0F1
-    正类 = "真实值 < c"（被视为零需求）
-    TP0: 真实 < c 且预测 < c
-    FP0: 真实 >= c 且预测 < c
-    FN0: 真实 < c 且预测 >= c
+    Positive class = "actual value < c" (treated as no demand)
+    TP0: actual < c and predicted < c
+    FP0: actual >= c and predicted < c
+    FN0: actual < c and predicted >= c
     """
     p = np.asarray(pred, dtype=np.float64).ravel()
     t = np.asarray(true, dtype=np.float64).ravel()
@@ -201,17 +201,17 @@ def _zero_classification(pred, true, c=0.5):
     return float(precision), float(recall), float(f1)
 
 
-# ---- 分段 RMSE（基于非零真实值分位数） ----
+# ---- Segment RMSE (quantiles of the non-zero actual values) ----
 
 _PERCENTILES = [10, 25, 50, 75, 90, 100]
 
 
 def _segment_rmse_by_percentile(pred, true, c=None):
     """
-    按真实非零值的分位数分段计算 RMSE。
-    c=None → 不截断 (非零: true>0)
-    c=float → 截断版 (非零: true>=c)
-    返回 OrderedDict，key 包含实际分位数值。
+    RMSE computed within segments defined by quantiles of the non-zero actual values.
+    c=None -> non-truncated (non-zero: true > 0)
+    c=float -> truncated version (non-zero: true >= c)
+    Returns an OrderedDict whose keys carry the actual quantile values.
     """
     p = np.asarray(pred, dtype=np.float64).ravel()
     t = np.asarray(true, dtype=np.float64).ravel()
@@ -255,10 +255,10 @@ def _segment_rmse_by_percentile(pred, true, c=None):
     return res
 
 
-# ---- ADI-CV² 分类及分组 RMSE ----
+# ---- ADI-CV^2 classification and per-class RMSE ----
 
 def _adi_cv2(hist_series, c=None):
-    """单条历史序列 → (ADI, CV²)"""
+    """One history series -> (ADI, CV^2)."""
     h = np.asarray(hist_series, dtype=np.float64)
     if c is not None:
         h = h.copy()
@@ -289,9 +289,9 @@ def _adi_cv2_group_rmse(preds, trues, hist_data, c=None):
     """
     preds/trues: (N, pred_len, C)  float32
     hist_data: (T_train, C)
-    返回 OrderedDict: {"Smooth RMSE": ..., ...}
+    Returns an OrderedDict: {"Smooth RMSE": ..., ...}
 
-    内存友好：逐时间窗累加 SSE，避免创建 (N*pred_len, C) 的中间数组。
+    Memory-friendly: the SSE is accumulated window by window, avoiding an (N*pred_len, C) intermediate array.
     """
     N, pred_len, C = preds.shape
     labels = []
@@ -305,11 +305,11 @@ def _adi_cv2_group_rmse(preds, trues, hist_data, c=None):
     else:
         tu, pu = trues, preds
 
-    # 逐窗累加每条序列的 SSE（float64 精度）
+    # accumulate the SSE of each series window by window (float64)
     sse = np.zeros(C, dtype=np.float64)
     for i in range(N):
         diff = pu[i].astype(np.float64) - tu[i].astype(np.float64)  # (pred_len, C)
-        sse += (diff ** 2).sum(axis=0)  # 对 pred_len 求和
+        sse += (diff ** 2).sum(axis=0)  # sum over pred_len
 
     cnt_per_series = N * pred_len
 
@@ -326,27 +326,27 @@ def _adi_cv2_group_rmse(preds, trues, hist_data, c=None):
 
 
 # ============================================================================
-#  综合评估函数（对照 评价指标.md）
+#  Combined evaluation function
 # ============================================================================
 
 def metric_comprehensive(preds, trues, historical_data, c=0.5):
     """
-    计算文档中所有指标，返回 OrderedDict。
+    Computes every metric this benchmark defines and returns an OrderedDict.
 
-    参数:
-      preds:           (N, pred_len, C)  预测值（原始尺度）
-      trues:           (N, pred_len, C)  真实值（原始尺度）
-      historical_data: (T_train, C)      训练期历史数据，仅用于 ADI-CV²
-      c:               截断阈值，默认 0.5
+    Arguments:
+      preds:           (N, pred_len, C)  predictions on the original scale
+      trues:           (N, pred_len, C)  actual values on the original scale
+      historical_data: (T_train, C)      training-period history, used only for ADI-CV^2
+      c:               truncation threshold, default 0.5
 
-    返回:
-      OrderedDict，key 为指标名，value 为 float
+    Returns:
+      OrderedDict mapping metric name to float
     """
     results = OrderedDict()
     pf = preds.ravel()
     tf = trues.ravel()
 
-    # ===================== 不截断指标 =====================
+    # ==================== non-truncated metrics ====================
     results["QL(0.5)"] = _ql(pf, tf, rho=0.5)
     results["MAE_nonzero"] = _mae_nz(pf, tf)
     results["RMSE_nonzero"] = _rmse_nz(pf, tf)
@@ -357,7 +357,7 @@ def metric_comprehensive(preds, trues, historical_data, c=0.5):
     for k, v in _adi_cv2_group_rmse(preds, trues, historical_data, c=None).items():
         results[f"NT_{k}"] = v
 
-    # ===================== 截断指标 =====================
+    # ====================== truncated metrics =======================
     tf_c = _truncate(tf, c)
     pf_c = _truncate(pf, c)
 
@@ -379,31 +379,31 @@ def metric_comprehensive(preds, trues, historical_data, c=0.5):
 
 
 # ============================================================================
-#  格式化打印
+#  Formatted printing
 # ============================================================================
 
 def print_metrics_table(metrics_dict):
-    """美观打印指标表，区分不截断/截断两组"""
+    """Print the metric table, separating the non-truncated and truncated groups."""
     print("\n" + "=" * 72)
-    print("                    评  价  指  标  汇  总")
+    print("                    M E T R I C   S U M M A R Y")
     print("=" * 72)
 
-    # 分组
+    # grouping
     nt_keys = [k for k in metrics_dict if k.startswith("NT_") or
                (not k.startswith("T_") and not k.startswith("NT_") and "c=" not in k)]
     t_keys = [k for k in metrics_dict if k.startswith("T_") or "c=" in k]
 
     def _print_group(title, keys):
-        print(f"\n  ┌─ {title} ──────────────────────────────────────┐")
+        print(f"\n  +- {title} --------------------------------------+")
         for k in keys:
             v = metrics_dict.get(k, "N/A")
             if isinstance(v, float):
                 s = f"{v:.6f}" if not np.isnan(v) else "N/A"
             else:
                 s = str(v)
-            print(f"  │ {k:<48s} = {s:>12s} │")
-        print(f"  └{'─'*62}┘")
+            print(f"  | {k:<48s} = {s:>12s} |")
+        print(f"  +{'-'*62}+")
 
-    _print_group("不截断指标 (Non-Truncated)", nt_keys)
-    _print_group(f"截断指标 (Truncated)", t_keys)
+    _print_group("Non-truncated metrics", nt_keys)
+    _print_group("Truncated metrics", t_keys)
     print("=" * 72)

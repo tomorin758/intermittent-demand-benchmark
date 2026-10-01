@@ -165,7 +165,7 @@ plt.tight_layout()
 plt.savefig(_os.path.join(_RESULTS,'fig_reorder.pdf'),bbox_inches='tight')
 plt.savefig(_os.path.join(_RESULTS,'fig_reorder.png'),dpi=200,bbox_inches='tight')
 
-# ---- §9.1 render-then-verify: bbox 重叠检查 ----
+# ---- 9.1 render-then-verify: bbox overlap check ----
 import matplotlib.text as mtext
 r=fig.canvas.get_renderer()
 texts=[(t,t.get_window_extent(r)) for t in fig.findobj(mtext.Text) if t.get_text().strip() and t.get_visible()]
@@ -173,9 +173,9 @@ spines=[(s,s.get_window_extent(r)) for ax in fig.axes for s in ax.spines.values(
 tick={ax:set(ax.get_xticklabels(which='both')+ax.get_yticklabels(which='both')) for ax in fig.axes}
 ov=[(a.get_text(),b.get_text()) for i,(a,ba) in enumerate(texts) for b,bb in texts[i+1:] if ba.overlaps(bb)]
 ov+=[(t.get_text(),'spine') for t,bt in texts for s,bs in spines if bt.overlaps(bs) and t not in tick.get(s.axes,set())]
-print("BBOX 重叠:", ov if ov else "无")
+print("BBOX overlap:", ov if ov else "none")
 oob=[t.get_text() for t,b in texts if not fig.bbox.contains(*b.p0) or not fig.bbox.contains(*b.p1)]
-print("超出画布:", oob if oob else "无")
+print("outside canvas:", oob if oob else "none")
 print("saved results/fig_reorder.pdf and .png")
 # print the rho table for the caption
 for ds in ['Parts','Fresh','M5']:

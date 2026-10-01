@@ -30,30 +30,30 @@ for ds in DS:
     for m in models:
         pp=os.path.join(d,m,'pred.npy'); tp=os.path.join(d,m,'true.npy')
         if not (os.path.exists(pp) and os.path.exists(tp)):
-            print(f"  [skip] {ds}/{m} 缺文件"); continue
+            print(f"  [skip] {ds}/{m} missing files"); continue
         p=np.load(pp).ravel().astype(np.float64); t=np.load(tp).ravel().astype(np.float64)
         res[m]={c:metrics(p,t,c) for c in CS}
         del p,t
     OUT[ds]=res
     n=len(next(iter(res.values()))) if res else 0
-    print(f"\n{'='*100}\n{ds}   模型数={len(res)}   测试点数={n}\n{'='*100}")
-    print(f"{'model':18s}" + "".join(f"{'F1@'+str(c):>9}" for c in CS) + f"{'跨度':>8}{'@0.5名次':>9}")
+    print(f"\n{'='*100}\n{ds}   models={len(res)}   test points={n}\n{'='*100}")
+    print(f"{'model':18s}" + "".join(f"{'F1@'+str(c):>9}" for c in CS) + f"{'span':>8}{'@0.5 rank':>11}")
     order=sorted(res, key=lambda m: -res[m][0.5][3])
     for i,m in enumerate(order):
         f=[res[m][c][3] for c in CS]
         print(f"{m:18s}" + "".join(f"{v:9.3f}" for v in f) + f"{max(f)-min(f):8.3f}{i+1:9d}")
-    print("\n  各 c 下的最佳零检测器：")
+    print("\n  best zero detector at each c:")
     for c in CS:
         b=max(res,key=lambda m:res[m][c][3])
         spread=max(res[m][c][3] for m in res)-min(res[m][c][3] for m in res)
-        print(f"    c={c:<5} {b:18s} F1={res[b][c][3]:.3f}   全场极差={spread:.3f}")
-    print("\n  与 c=0.5 的 F1 排名相关性：")
+        print(f"    c={c:<5} {b:18s} F1={res[b][c][3]:.3f}   field spread={spread:.3f}")
+    print("\n  rank correlation with the c=0.5 F1 ordering:")
     ms=list(res); base=avgrank([res[m][0.5][3] for m in ms])
     for c in CS:
         if c==0.5: continue
         rc=avgrank([res[m][c][3] for m in ms])
         mv=max(abs(base[i]-rc[i]) for i in range(len(ms)))
-        print(f"    c={c:<5} rho={pear(base,rc):+.3f}  最大名次变动={mv:.0f}")
+        print(f"    c={c:<5} rho={pear(base,rc):+.3f}  max rank move={mv:.0f}")
 _resdir = os.environ.get('RESULTS_DIR', 'results')
 os.makedirs(_resdir, exist_ok=True)
 json.dump({ds:{m:{str(c):v for c,v in r.items()} for m,r in OUT[ds].items()} for ds in OUT},

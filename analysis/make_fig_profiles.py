@@ -214,9 +214,9 @@ for c in CLASSES:
                     bbox=dict(fc='white', ec='none', pad=0.4, alpha=0.85))
     left += vals
 for i, (name, _, _) in enumerate(DS):
-    print(f"  bar check {name:<13} 精确 " + "  ".join(f"{c[:4]} {exact[i][c]:5.2f}" for c in CLASSES)
-          + f" (合计 {sum(exact[i].values()):.2f}) → 取整 " + "  ".join(f"{c[:4]} {rounded[i][c]:>2}" for c in CLASSES)
-          + f" (合计 {sum(rounded[i].values())})   no class {100.0*(data[name]['cls']=='na').mean():4.1f}%")
+    print(f"  bar check {name:<13} exact " + "  ".join(f"{c[:4]} {exact[i][c]:5.2f}" for c in CLASSES)
+          + f" (sum {sum(exact[i].values()):.2f}) -> rounded " + "  ".join(f"{c[:4]} {rounded[i][c]:>2}" for c in CLASSES)
+          + f" (sum {sum(rounded[i].values())})   no class {100.0*(data[name]['cls']=='na').mean():4.1f}%")
 ax.set_yticks(ys); ax.set_yticklabels([n for n, _, _ in DS], fontsize=5.5)
 ax.set_xlim(0, 100); ax.set_xlabel('share of series (%)', fontsize=6.5)
 ax.text(0.5, -0.22, '(d)', transform=ax.transAxes, ha='center', va='top', fontsize=7)
