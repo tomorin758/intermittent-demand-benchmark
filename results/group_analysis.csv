@@ -1,0 +1,68 @@
+dataset,family,model,ql_raw,n_series,rank_in_family,is_family_leader,separated_from_family_leader
+parts,classical intermittent-demand,TSB,0.377923,857,1,1,
+parts,classical intermittent-demand,SBA,0.425865,857,2,0,1
+parts,classical intermittent-demand,Croston,0.435152,857,3,0,1
+parts,zero-inflated and count-likelihood,DeepAR-negbin,0.295994,857,1,1,
+parts,zero-inflated and count-likelihood,TweedieGP,0.316357,857,2,0,1
+parts,zero-inflated and count-likelihood,DeepAR,0.319908,857,3,0,1
+parts,zero-inflated and count-likelihood,HurdleDLinear,0.363651,857,4,0,1
+parts,per-dataset-trained deep regressor,PatchMixer,0.313271,857,1,1,
+parts,per-dataset-trained deep regressor,PatchTCN,0.329463,857,2,0,1
+parts,per-dataset-trained deep regressor,PatchTST,0.346971,857,3,0,1
+parts,per-dataset-trained deep regressor,PatchTSMixer,0.353062,857,4,0,1
+parts,per-dataset-trained deep regressor,Autoformer,0.418426,857,5,0,1
+parts,per-dataset-trained deep regressor,FEDformer,0.420212,857,6,0,1
+parts,per-dataset-trained deep regressor,WaveNet-like,0.455341,857,7,0,1
+parts,per-dataset-trained deep regressor,TCN,0.468694,857,8,0,1
+parts,per-dataset-trained deep regressor,LSTM,0.471139,857,9,0,1
+parts,per-dataset-trained deep regressor,DLinear,0.521785,857,10,0,1
+parts,"foundation model, zero-shot",TimesFM,0.301767,857,1,1,
+parts,"foundation model, zero-shot",Chronos,0.304618,857,2,0,0
+parts,"foundation model, zero-shot",Moirai,0.333172,857,3,0,1
+parts,"foundation model, head-only fine-tuned",MOMENT,0.359535,857,1,1,
+parts,"foundation model, head-only fine-tuned",TTM,0.374286,857,2,0,1
+fresh_retail,classical intermittent-demand,TSB,0.288646,50000,1,1,
+fresh_retail,classical intermittent-demand,Croston,0.300728,50000,2,0,1
+fresh_retail,classical intermittent-demand,SBA,0.307037,50000,3,0,1
+fresh_retail,zero-inflated and count-likelihood,DeepAR,0.296222,50000,1,1,
+fresh_retail,zero-inflated and count-likelihood,DeepAR-negbin,0.301130,50000,2,0,1
+fresh_retail,zero-inflated and count-likelihood,TweedieGP,0.325693,50000,3,0,1
+fresh_retail,zero-inflated and count-likelihood,HurdleDLinear,0.474636,50000,4,0,1
+fresh_retail,per-dataset-trained deep regressor,PatchMixer,0.283858,50000,1,1,
+fresh_retail,per-dataset-trained deep regressor,PatchTST,0.289700,50000,2,0,1
+fresh_retail,per-dataset-trained deep regressor,PatchTCN,0.290351,50000,3,0,1
+fresh_retail,per-dataset-trained deep regressor,PatchTSMixer,0.297396,50000,4,0,1
+fresh_retail,per-dataset-trained deep regressor,FEDformer,0.325829,50000,5,0,1
+fresh_retail,per-dataset-trained deep regressor,Autoformer,0.328023,50000,6,0,1
+fresh_retail,per-dataset-trained deep regressor,WaveNet-like,0.348439,50000,7,0,1
+fresh_retail,per-dataset-trained deep regressor,TCN,0.354677,50000,8,0,1
+fresh_retail,per-dataset-trained deep regressor,LSTM,0.361060,50000,9,0,1
+fresh_retail,per-dataset-trained deep regressor,DLinear,0.367634,50000,10,0,1
+fresh_retail,"foundation model, zero-shot",TimesFM,0.269573,50000,1,1,
+fresh_retail,"foundation model, zero-shot",Chronos,0.274678,50000,2,0,1
+fresh_retail,"foundation model, zero-shot",Moirai,0.285980,50000,3,0,1
+fresh_retail,"foundation model, head-only fine-tuned",TTM,0.298351,50000,1,1,
+fresh_retail,"foundation model, head-only fine-tuned",MOMENT,0.458721,50000,2,0,1
+m5,classical intermittent-demand,TSB,0.520037,30490,1,1,
+m5,classical intermittent-demand,SBA,0.542582,30490,2,0,1
+m5,classical intermittent-demand,Croston,0.550781,30490,3,0,1
+m5,zero-inflated and count-likelihood,DeepAR-negbin,0.489576,30490,1,1,
+m5,zero-inflated and count-likelihood,DeepAR,0.495986,30490,2,0,1
+m5,zero-inflated and count-likelihood,TweedieGP,0.500372,30490,3,0,1
+m5,zero-inflated and count-likelihood,HurdleDLinear,0.573359,30490,4,0,1
+m5,per-dataset-trained deep regressor,PatchMixer,0.494258,30490,1,1,
+m5,per-dataset-trained deep regressor,PatchTSMixer,0.504526,30490,2,0,1
+m5,per-dataset-trained deep regressor,PatchTST,0.506813,30490,3,0,1
+m5,per-dataset-trained deep regressor,PatchTCN,0.512281,30490,4,0,1
+m5,per-dataset-trained deep regressor,DLinear,0.512433,30490,5,0,1
+m5,per-dataset-trained deep regressor,WaveNet-like,0.522083,30490,6,0,1
+m5,per-dataset-trained deep regressor,TCN,0.522258,30490,7,0,1
+m5,per-dataset-trained deep regressor,LSTM,0.532136,30490,8,0,1
+m5,per-dataset-trained deep regressor,Autoformer,0.598338,30490,9,0,1
+m5,per-dataset-trained deep regressor,FEDformer,0.608013,30490,10,0,1
+m5,"foundation model, zero-shot",TimesFM,0.478014,30490,1,1,
+m5,"foundation model, zero-shot",Chronos,0.504190,30490,2,0,1
+m5,"foundation model, zero-shot",Moirai,0.510996,30490,3,0,1
+m5,"foundation model, head-only fine-tuned",TTM,0.507694,30490,1,1,
+m5,"foundation model, head-only fine-tuned",Timer,0.785320,30490,2,0,1
+m5,"foundation model, head-only fine-tuned",MOMENT,0.809362,30490,3,0,1

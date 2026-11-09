@@ -58,6 +58,7 @@ Everything below runs from the bundle alone (numpy + pandas; matplotlib only for
 | `python analysis/romano_wolf.py` | `results/romano_wolf_{ql_raw,f1_trunc}.{txt,json}` | the family-wise-error-controlled pair counts and leading groups of Section 4 |
 | `python analysis/trivial_baselines.py` | `results/trivial_baselines.csv` | the trivial reference predictors (always-zero, naive, seasonal naive, two constant means) and the ranks they would take among the subjects; Section 5.1 and the limitations (Section 6.1) |
 | `python analysis/rank_analysis.py tables/parts_unified.csv tables/fresh_retail_unified.csv tables/m5_unified.csv unified` | `results/rank_analysis_unified.txt` | metric redundancy and rank-reversal statistics (Section 4.2) |
+| `python analysis/group_analysis.py` | `results/group_analysis.{csv,txt}` | within-family rankings and the separated-pair counts of Section 4.1 (runs from `metrics/perseries` alone) |
 | `python analysis/make_fig_profiles.py` | `results/fig_profiles.pdf` | Figure 1 (needs the history tables; the M5 table is not redistributed, so the printed figure ships as `results/fig_profiles.pdf`) |
 | `python analysis/make_fig_reorder_unified.py` | `results/fig_reorder.pdf` | Figure 2 |
 | `python analysis/make_fig_csens.py` | `results/fig_csens.pdf` | Figure 3 |

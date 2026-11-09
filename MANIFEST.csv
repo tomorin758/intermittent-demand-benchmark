@@ -86,3 +86,4 @@ Chronos repeat-inference draws (Section 3.4),parts,results/chronos_repeat_spread
 Romano-Wolf stepdown counts,all,analysis/romano_wolf.py,controls FWER at 5% over all model pairs; same resampling as bootstrap_final.py
 exact-zero rate and zero detection under an exact-zero rule,all,results/zero_rule_analysis.csv,"computed by analysis/zero_rule_analysis.py from the prediction arrays, which are not redistributed; backs Section 4.1"
 always-zero error decomposition,all,results/zero_rule_analysis.csv,zero-demand and positive-demand error per model with the always-zero reference; backs Section 5.1
+within-family rankings and separated-pair counts,all,results/group_analysis.csv,computed by analysis/group_analysis.py from metrics/perseries alone; backs the family paragraph of Section 4.1

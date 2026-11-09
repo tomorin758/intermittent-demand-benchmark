@@ -1,0 +1,36 @@
+
+parts: 22 models, 857 series
+  classical intermittent-demand              leader TSB            0.3779   within-family separated 3/3
+    TSB 0.378, SBA 0.426, Croston 0.435
+  zero-inflated and count-likelihood         leader DeepAR-negbin  0.2960   within-family separated 5/6
+    DeepAR-negbin 0.296, TweedieGP 0.316, DeepAR 0.320, HurdleDLinear 0.364
+  per-dataset-trained deep regressor         leader PatchMixer     0.3133   within-family separated 43/45
+    PatchMixer 0.313, PatchTCN 0.329, PatchTST 0.347, PatchTSMixer 0.353, Autoformer 0.418, FEDformer 0.420, WaveNet-like 0.455, TCN 0.469, LSTM 0.471, DLinear 0.522
+  foundation model, zero-shot                leader TimesFM        0.3018   within-family separated 2/3
+    TimesFM 0.302, Chronos 0.305, Moirai 0.333
+  foundation model, head-only fine-tuned     leader MOMENT         0.3595   within-family separated 1/1
+    MOMENT 0.360, TTM 0.374
+
+fresh_retail: 22 models, 50000 series
+  classical intermittent-demand              leader TSB            0.2886   within-family separated 3/3
+    TSB 0.289, Croston 0.301, SBA 0.307
+  zero-inflated and count-likelihood         leader DeepAR         0.2962   within-family separated 6/6
+    DeepAR 0.296, DeepAR-negbin 0.301, TweedieGP 0.326, HurdleDLinear 0.475
+  per-dataset-trained deep regressor         leader PatchMixer     0.2839   within-family separated 45/45
+    PatchMixer 0.284, PatchTST 0.290, PatchTCN 0.290, PatchTSMixer 0.297, FEDformer 0.326, Autoformer 0.328, WaveNet-like 0.348, TCN 0.355, LSTM 0.361, DLinear 0.368
+  foundation model, zero-shot                leader TimesFM        0.2696   within-family separated 3/3
+    TimesFM 0.270, Chronos 0.275, Moirai 0.286
+  foundation model, head-only fine-tuned     leader TTM            0.2984   within-family separated 1/1
+    TTM 0.298, MOMENT 0.459
+
+m5: 23 models, 30490 series
+  classical intermittent-demand              leader TSB            0.5200   within-family separated 3/3
+    TSB 0.520, SBA 0.543, Croston 0.551
+  zero-inflated and count-likelihood         leader DeepAR-negbin  0.4896   within-family separated 6/6
+    DeepAR-negbin 0.490, DeepAR 0.496, TweedieGP 0.500, HurdleDLinear 0.573
+  per-dataset-trained deep regressor         leader PatchMixer     0.4943   within-family separated 43/45
+    PatchMixer 0.494, PatchTSMixer 0.505, PatchTST 0.507, PatchTCN 0.512, DLinear 0.512, WaveNet-like 0.522, TCN 0.522, LSTM 0.532, Autoformer 0.598, FEDformer 0.608
+  foundation model, zero-shot                leader TimesFM        0.4780   within-family separated 3/3
+    TimesFM 0.478, Chronos 0.504, Moirai 0.511
+  foundation model, head-only fine-tuned     leader TTM            0.5077   within-family separated 3/3
+    TTM 0.508, Timer 0.785, MOMENT 0.809
