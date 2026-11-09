@@ -84,3 +84,5 @@ threshold sweep,all,analysis/cscan_final.py,"c in {0.1,...,2.0}"
 trivial reference predictors,all,analysis/trivial_baselines.py,"always-zero, naive, seasonal naive, constant means; kept out of the ranking pool"
 Chronos repeat-inference draws (Section 3.4),parts,results/chronos_repeat_spread.csv,"ten repeats of identical inference, ql_raw and f1_trunc per repeat"
 Romano-Wolf stepdown counts,all,analysis/romano_wolf.py,controls FWER at 5% over all model pairs; same resampling as bootstrap_final.py
+exact-zero rate and zero detection under an exact-zero rule,all,results/zero_rule_analysis.csv,"computed by analysis/zero_rule_analysis.py from the prediction arrays, which are not redistributed; backs Section 4.1"
+always-zero error decomposition,all,results/zero_rule_analysis.csv,zero-demand and positive-demand error per model with the always-zero reference; backs Section 5.1

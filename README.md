@@ -62,17 +62,20 @@ Everything below runs from the bundle alone (numpy + pandas; matplotlib only for
 | `python analysis/make_fig_reorder_unified.py` | `results/fig_reorder.pdf` | Figure 2 |
 | `python analysis/make_fig_csens.py` | `results/fig_csens.pdf` | Figure 3 |
 | (pre-computed) `results/cscan.csv` | per-model zero-detection metrics at c in {0.1 ... 2.0} | the threshold-sensitivity section |
+| (pre-computed) `results/zero_rule_analysis.csv` | exact-zero rates, zero detection under an exact-zero rule against the protocol rule, and the always-zero error decomposition | the abstention paragraph of Section 4.1 and the reference-predictor paragraph of Section 5.1 |
 
 ## Scope of this bundle
 
 This bundle contains the evaluation *outputs* and the code that turns them into the paper's numbers.
 It does not contain model implementations, trained checkpoints or prediction arrays, so the forecasts
-themselves cannot be regenerated from it; `analysis/cscan_final.py` is the one script that needs the
-arrays (it is kept so that the same sweep can be re-run by anyone who has them, while its raw output
-is shipped as `results/cscan.csv`). For a reader who does want to rebuild the full pipeline,
-`code/pipeline/` documents exactly what was run, and the paper's Section 3 lists the third-party
-repositories and datasets that the runs started from. Three shipped results are pre-computed rather
-than regenerated: `results/cscan.csv` (needs the prediction arrays), `results/fig_profiles.pdf`
+themselves cannot be regenerated from it; `analysis/cscan_final.py` and
+`analysis/zero_rule_analysis.py` are the two scripts that need the arrays (they are kept so that
+the same computations can be re-run by anyone who has them, while their output is shipped as
+`results/cscan.csv` and `results/zero_rule_analysis.csv`). For a reader who does want to rebuild
+the full pipeline, `code/pipeline/` documents exactly what was run, and the paper's Section 3 lists
+the third-party repositories and datasets that the runs started from. Four shipped results are
+pre-computed rather than regenerated: `results/cscan.csv` and `results/zero_rule_analysis.csv`
+(both need the prediction arrays), `results/fig_profiles.pdf`
 (needs the M5 history table, which is not redistributed) and the M5 rows of
 `results/trivial_baselines.csv` (same reason; the script recomputes the Parts and Fresh retail rows
 from `data/` alone). The estimator-error sweeps quoted in
