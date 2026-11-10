@@ -87,3 +87,4 @@ Romano-Wolf stepdown counts,all,analysis/romano_wolf.py,controls FWER at 5% over
 exact-zero rate and zero detection under an exact-zero rule,all,results/zero_rule_analysis.csv,"computed by analysis/zero_rule_analysis.py from the prediction arrays, which are not redistributed; backs Section 4.1"
 always-zero error decomposition,all,results/zero_rule_analysis.csv,zero-demand and positive-demand error per model with the always-zero reference; backs Section 5.1
 within-family rankings and separated-pair counts,all,results/group_analysis.csv,computed by analysis/group_analysis.py from metrics/perseries alone; backs the family paragraph of Section 4.1
+window stability across non-overlapping windows,all,results/window_stability.csv,"computed by analysis/window_stability.py from the prediction arrays, which are not redistributed; backs the window-stability paragraph of Section 4.1"

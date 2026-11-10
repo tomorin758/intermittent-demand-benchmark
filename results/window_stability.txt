@@ -1,0 +1,15 @@
+
+parts: 12 models, 3 non-overlapping windows of H=3
+  winner per window: always-zero, always-zero, always-zero
+  rank correlation against the reported window: 0.888 to 0.993
+  distinct top-three sets: 1 ('always-zero', 'TimesFM', 'PatchMixer')
+
+fresh_retail: 12 models, 2 non-overlapping windows of H=7
+  winner per window: TimesFM, TimesFM
+  rank correlation against the reported window: 0.986 to 0.986
+  distinct top-three sets: 2 
+
+m5: 9 models, 13 non-overlapping windows of H=28
+  winner per window: TimesFM, TimesFM, TimesFM, TimesFM, TimesFM, TimesFM, TimesFM, TimesFM, TimesFM, TimesFM, TimesFM, TimesFM, TimesFM
+  rank correlation against the reported window: 0.967 to 1.000
+  distinct top-three sets: 1 ('TimesFM', 'PatchMixer', 'PatchTSMixer')

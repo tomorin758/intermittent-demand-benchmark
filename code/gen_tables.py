@@ -132,7 +132,7 @@ def emit(name, display, data, cols, fname, floatenv, caption, label=None, width=
     L.append("\\centering")
     L.append("\\caption{%s}" % caption)
     L.append("\\label{%s}" % (label or (("tab:ext:%s" if "extended" in fname else "tab:res:%s") % name)))
-    L.append("\\renewcommand{\\arraystretch}{0.95}")
+    L.append("\\renewcommand{\\arraystretch}{0.90}")
     L.append("\\resizebox{%s}{!}{%%" % width)
     L.append("\\begin{tabular}{l%s}" % ("r" * len(cols)))
     L.append("\\toprule")
@@ -168,9 +168,13 @@ def main():
     for key, (fname, display) in DATA.items():
         # Inside the released artefact bundle the sheet-format CSVs live in tables/<ds>_unified.csv
         # (there is no separate data/ directory); in the paper workspace they live in ../data/.
-        cand = [os.path.join(DATA_DIR, fname),
-                os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, 'tables',
-                             fname.replace('.csv', '_unified.csv'))]
+        # The bundle ships the sheet-format result CSVs in tables/<ds>_unified.csv and keeps the
+        # history tables in data/, which are a different format; prefer the sheet first so that all
+        # three tables are rebuilt from the same source whether the script runs in the paper
+        # workspace or in the released bundle.
+        cand = [os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, 'tables',
+                             fname.replace('.csv', '_unified.csv')),
+                os.path.join(DATA_DIR, fname)]
         path = next((c for c in cand if os.path.exists(c)), cand[0])
         d = read_csv(path)
         all_data += d
