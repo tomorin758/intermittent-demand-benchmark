@@ -9,7 +9,7 @@
 \toprule
 \multicolumn{1}{l}{} & \multicolumn{6}{c}{Core metrics} & \multicolumn{2}{c}{RMSE by segment} & \multicolumn{4}{c}{RMSE by class} \\
 \cmidrule(lr){2-7}\cmidrule(lr){8-9}\cmidrule(lr){10-13}
-Model & QL(0.5) & 0P & 0R & 0F1 & MAE$_{>0}$ & RMSE$_{>0}$ & $[0,q_{10}]$ & $>q_{90}$ & Int. & Lum. & Sm. & Err. \\
+Model & QL(0.5) & 0P & 0R & 0F1 & MAE$_{>0}$ & RMSE$_{>0}$ & $\le q_{10}$ & $>q_{90}$ & Int. & Lum. & Sm. & Err. \\
 \midrule
 PatchTST & 0.507 & - & - & - & 1.597 & 2.976 & 1.016 & 8.100 & 1.517 & 2.818 & 4.287 & 5.422 \\
 PatchTST$^{\dagger}$ & 0.482 & 0.793 & 0.662 & 0.722 & 1.658 & 3.001 & 1.016 & 8.100 & 1.533 & 2.825 & 4.288 & 5.423 \\

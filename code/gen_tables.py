@@ -37,7 +37,7 @@ CORE_COLS = [
 # Section~\ref{sec:reorder}), and the remaining ones enter that section's redundancy analysis.
 # All 16 metrics are in the released per-model files.
 EXT_COLS = [
-    ("[0, q10] RMSE",       "$[0,q_{10}]$"),
+    ("[0, q10] RMSE",       "$\\le q_{10}$"),
     ("(q90, \u221e) RMSE",  "$>q_{90}$"),
     ("intermittent RMSE",   "Int."),
     ("lumpy RMSE",          "Lum."),
