@@ -161,8 +161,9 @@ and the MOMENT/Timer M5 shards. Their metrics files *are* copied.
    Fresh-retail value (64.4 %) are close to the computed 33.1 %/37.3 % and 63.3 %/67.7 %
    depending on the window definition. `main.tex:150` already carries the TODO
    “verify all profile numbers against the final data”.
-2. **The repo URL is still a placeholder**: `main.tex:338` — `\url{https://anonymous.repo/TODO}`,
-   and the data/code-availability section has a TODO at lines 340–341.
+2. **The repository URL was a placeholder** in the reviewed version of the manuscript. Resolved in
+   the camera-ready version: the data and code availability section links the public repository and
+   the supplementary copy ships its own note.
 3. **The `τ=0.5` semantics described in `main.tex:180-184` do not match the code** — see §4.6.
    The paper says “for probabilistic models the 0.5 quantile is used as the point forecast”;
    the evaluation code scores the *same* stored prediction array twice (with and without

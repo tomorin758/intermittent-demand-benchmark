@@ -66,7 +66,7 @@ p(f'metric = {COL}   B = {B}   paired over series (identical resample for both m
 for ds in DS:
     if not os.path.isdir(os.path.join(PERSERIES, ds)):
         p(f'\n{ds}: skipped -- metrics/perseries/{ds} is not part of this copy '
-          f'(see SUPPLEMENTARY_NOTE.md); the full bundle is at the anonymised mirror')
+          f'(see SUPPLEMENTARY_NOTE.md); the full bundle is at https://github.com/tomorin758/intermittent-demand-benchmark')
         skipped.append(ds); continue
     USE_COUNTS = METRIC == 'f1_trunc'
     tab = load(ds, counts=USE_COUNTS)

@@ -144,7 +144,7 @@ for metric in METRICS:
     for ds in DS:
         if not os.path.isdir(os.path.join(PERSERIES, ds)):
             p(f'\n{ds}: skipped -- metrics/perseries/{ds} is not part of this copy '
-              f'(see SUPPLEMENTARY_NOTE.md); the full bundle is at the anonymised mirror')
+              f'(see SUPPLEMENTARY_NOTE.md); the full bundle is at https://github.com/tomorin758/intermittent-demand-benchmark')
             skipped.append(ds); continue
         res = bootstrap_pairs(ds, metric)
         if res is None:

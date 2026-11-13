@@ -2,8 +2,15 @@ cff-version: 1.2.0
 message: "If you use these artefacts, please cite the accompanying paper."
 title: "Scoring the Zero Decision: A Benchmark and Evaluation Protocol for Intermittent Demand Forecasting (artefacts)"
 authors:
-  - name: "Anonymous Author(s)"
-    affiliation: "Anonymous Institution (withheld for double-blind review)"
+  - family-names: "Ji"
+    given-names: "Runmin"
+    affiliation: "School of Data Science and Engineering, East China Normal University"
+  - family-names: "Fan"
+    given-names: "Xinyuan"
+    affiliation: "School of Data Science and Engineering, East China Normal University"
+  - family-names: "Ni"
+    given-names: "Lyu"
+    affiliation: "School of Data Science and Engineering, East China Normal University"
 year: 2026
 license: Apache-2.0
 type: dataset
