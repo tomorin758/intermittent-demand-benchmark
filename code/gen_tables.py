@@ -99,6 +99,14 @@ def fmt_cell(v, best, high_better=False):
         return "\\textbf{%s}" % v
     return v
 
+# Display names that differ from the row labels in the source sheets; the sheets keep the
+# original labels so every joined file still matches, only the printed table is normalised.
+_DISPLAY = {
+    "DeepAR(negbin)": "DeepAR-negbin",
+    "WaveNet-like": "WaveNet",
+}
+
+
 def latex_model(model):
     """Compress model names: (tau=0.5) -> dagger marker; tau -> math.
 
@@ -108,9 +116,11 @@ def latex_model(model):
     The dagger therefore means "truncated at c = 0.5", which is how the
     captions below describe it.
     """
+    suffix = ""
     if model.endswith("(\u03c4=0.5)"):
-        return model[: -len("(\u03c4=0.5)")] + "$^{\\dagger}$"
-    return model.replace("\u03c4", "$\\tau$")
+        model = model[: -len("(\u03c4=0.5)")]
+        suffix = "$^{\\dagger}$"
+    return _DISPLAY.get(model, model).replace("\u03c4", "$\\tau$") + suffix
 
 def emit(name, display, data, cols, fname, floatenv, caption, label=None, width="\\linewidth"):
     rows = [r for r in data if r[0] == name]
