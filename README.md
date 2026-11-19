@@ -3,9 +3,9 @@
 Companion artefacts for *Scoring the Zero Decision: A Benchmark and Evaluation Protocol for
 Intermittent Demand Forecasting* (Bench 2026).
 
-Runmin Ji, Xinyuan Fan and Lyu Ni — School of Data Science and Engineering, East China Normal
-University, Shanghai, China. Code is released under Apache-2.0; the derived data tables keep the
-licences of their sources (see `DATA_LICENSE.md`).
+NEED Lab, School of Data Science and Engineering, East China Normal University, Shanghai, China.
+Code is released under Apache-2.0; the derived data tables keep the licences of their sources (see
+`DATA_LICENSE.md`).
 
 ## What is here
 
